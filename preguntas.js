@@ -2,12 +2,14 @@
 // Cada pregunta: texto, 4 opciones, el índice de la correcta (0 = A, 1 = B, 2 = C, 3 = D)
 // y una explicación breve que se muestra al revelar.
 // La respuesta correcta y la explicación NUNCA se suben a la base de datos hasta que el profesor revela.
-// "segundos" es el tiempo sugerido por pregunta para ese banco.
+// "etiqueta", "titulo" y "nota" se muestran en la tarjeta del banco; "segundos" es el tiempo sugerido por pregunta.
 
 export const BANCOS = [
   {
     id: "s1-razonamiento",
-    titulo: "Sesión 1 · Ronda de práctica: ¿piensas o reaccionas? (no cuenta)",
+    etiqueta: "Sesión 1",
+    titulo: "¿Piensas o reaccionas?",
+    nota: "Ronda de práctica con trampas de razonamiento. No cuenta para la calificación.",
     segundos: 60,
     preguntas: [
       {
@@ -50,7 +52,9 @@ export const BANCOS = [
   },
   {
     id: "s1-cultura",
-    titulo: "Calentamiento · Cultura general (no cuenta)",
+    etiqueta: "Calentamiento",
+    titulo: "Cultura general",
+    nota: "Cinco preguntas ligeras para abrir la clase. No cuenta para la calificación.",
     segundos: 40,
     preguntas: [
       {

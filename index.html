@@ -3,108 +3,170 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#03040c">
 <title>La apuesta de confianza</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="estilos.css">
 <style>
-  main { max-width: 520px; margin: 0 auto; padding: max(18px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom)); }
-  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; color: var(--soft); font-size: .9em; }
-  .logo { font-family: var(--f-display); font-size: 1.15em; color: var(--ink); }
-  .logo em { color: var(--cyan); }
-  label { display: block; font-size: .9em; color: var(--soft); margin: .8em 0 .3em; }
-  input { width: 100%; font-size: 1.15em; }
-  #codigo { text-transform: uppercase; letter-spacing: .3em; text-align: center; font-weight: 700; }
-  .full { width: 100%; margin-top: 1.1em; font-size: 1.1em; padding: .9em; }
-  .q-num { color: var(--gold); font-weight: 600; font-size: .9em; }
-  .q-texto { font-family: var(--f-display); font-size: 1.5em; line-height: 1.2; margin: .3em 0 .8em; }
-  .opciones { display: grid; gap: .55em; }
-  .op { display: flex; gap: .7em; align-items: center; text-align: left; padding: .85em 1em; font-size: 1.05em; }
-  .op b { display: inline-grid; place-items: center; width: 1.8em; height: 1.8em; border-radius: 50%; border: 1px solid var(--cyan); color: var(--cyan); flex: none; }
-  .op.sel { border-color: var(--gold); background: rgba(255, 207, 122, .14); }
-  .op.sel b { background: var(--gold); color: #2a1c00; border-color: var(--gold); }
-  .apuestas { display: grid; grid-template-columns: repeat(4, 1fr); gap: .45em; }
-  .ap { padding: .8em .2em; font-weight: 700; font-size: 1.1em; }
-  .ap small { display: block; font-weight: 400; font-size: .7em; color: var(--soft); }
-  .ap.sel { border-color: var(--gold); background: rgba(255, 207, 122, .18); }
-  .reloj { height: 6px; background: rgba(79, 227, 255, .15); border-radius: 3px; overflow: hidden; margin: .4em 0 1em; }
-  .reloj i { display: block; height: 100%; background: var(--cyan); width: 100%; transition: width .25s linear; }
-  .grande { font-family: var(--f-display); font-size: 3.2em; line-height: 1; margin: .1em 0; }
-  .centro { text-align: center; }
-  .ok { color: var(--green); } .mal { color: var(--red); }
-  .total { margin-top: 1.2em; padding-top: 1em; border-top: 1px solid var(--line); }
-  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; margin-top: .6em; }
-  td, th { padding: .35em .4em; border-bottom: 1px solid var(--line); text-align: right; }
-  th:first-child, td:first-child { text-align: left; }
-  th { color: var(--dim); font-weight: 400; }
-  .explica { text-align: left; margin: .6em 0 0; padding: .8em 1em; border-left: 3px solid var(--green); background: rgba(94,230,168,.08); border-radius: 6px; color: var(--ink); line-height: 1.4; }
-  .latido { animation: latido 1.6s ease-in-out infinite; }
-  @keyframes latido { 50% { opacity: .45; } }
+  main { max-width: 560px; margin: 0 auto; min-height: 100dvh; display: flex; flex-direction: column;
+    padding: max(16px, env(safe-area-inset-top)) 16px calc(120px + env(safe-area-inset-bottom)); }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+  .top .marca { font-size: 1.02em; }
+  .vista { animation: entrar .5s var(--ease) both; }
+  @keyframes entrar { from { opacity: 0; transform: translateY(12px) scale(.985); } }
+
+  /* Unirse */
+  .unirse { padding: 28px 22px; margin-top: 6vh; }
+  .unirse h1 { font-size: 2em; margin-bottom: .35em; }
+  .unirse h1 span { background: linear-gradient(90deg, var(--cyan), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .unirse p { color: var(--soft); margin: 0 0 22px; }
+  .campo { display: block; margin-bottom: 14px; }
+  .campo span { display: block; font-size: .82em; color: var(--dim); margin: 0 0 6px 4px; letter-spacing: .04em; }
+  .campo input { width: 100%; height: 58px; border-radius: 18px; padding: 0 18px; font: inherit; font-size: 1.15em; color: var(--ink);
+    background: rgba(0, 0, 0, .25); border: 1px solid rgba(255, 255, 255, .16); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06); transition: border-color .2s, background .2s; }
+  .campo input:focus { outline: none; border-color: var(--cyan); background: rgba(0, 0, 0, .35); }
+  #codigo { text-transform: uppercase; letter-spacing: .5em; text-align: center; font-family: var(--f-display); font-weight: 700; font-size: 1.6em; padding-left: .5em; }
+  .unirse .btn { width: 100%; margin-top: 10px; height: 58px; font-size: 1.05em; }
+  .aviso { margin-top: 14px; }
+
+  /* Espera */
+  .espera { margin-top: 10vh; padding: 40px 24px; text-align: center; display: grid; justify-items: center; gap: 14px; }
+  .espera h2 { font-size: 1.5em; }
+  .espera p { color: var(--soft); margin: 0; max-width: 26em; }
+
+  /* Pregunta */
+  .cab { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .cab .num { font-family: var(--f-display); font-weight: 600; color: var(--gold); letter-spacing: .02em; }
+  .reloj { width: 46px; height: 46px; position: relative; }
+  .reloj svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .reloj circle { fill: none; stroke-width: 3; }
+  .reloj .fondo { stroke: rgba(255, 255, 255, .12); }
+  .reloj .arco { stroke: var(--cyan); stroke-linecap: round; transition: stroke-dashoffset .25s linear, stroke .3s; }
+  .reloj b { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--f-display); font-size: .95em; }
+  .reloj.urge .arco { stroke: var(--red); }
+  .loz.pregunta .in { font-family: var(--f-display); font-size: 1.18em; line-height: 1.3; min-height: 120px; padding: 1.2em 2.6em; }
+  .respuestas { display: grid; gap: 10px; margin: 16px 0 22px; }
+  .respuestas .loz:active:not(:disabled) { transform: scale(.985); }
+  .respuestas .loz .in { font-size: 1.04em; }
+  .seg-titulo { display: flex; justify-content: space-between; align-items: baseline; margin: 0 4px 8px; }
+  .seg-titulo span { font-size: .85em; color: var(--dim); letter-spacing: .04em; }
+  .segmentos { display: grid; grid-template-columns: repeat(4, 1fr); padding: 5px; gap: 4px; border-radius: 22px; position: relative; }
+  .segmentos button { position: relative; z-index: 1; height: 62px; border-radius: 17px; display: grid; place-content: center; gap: 2px; transition: color .2s; }
+  .segmentos button b { font-family: var(--f-display); font-size: 1.2em; }
+  .segmentos button small { font-size: .7em; color: var(--dim); transition: color .2s; }
+  .segmentos button[aria-pressed="true"] { color: #2a1600; }
+  .segmentos button[aria-pressed="true"] small { color: rgba(42, 22, 0, .7); }
+  .segmentos .ficha { position: absolute; z-index: 0; top: 5px; bottom: 5px; width: calc((100% - 22px) / 4); left: 5px; border-radius: 17px; opacity: 0;
+    background: linear-gradient(180deg, #ffe2a1, var(--gold) 50%, var(--gold2)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 8px 24px -8px rgba(255, 159, 46, .7);
+    transition: transform .35s var(--ease), opacity .25s; }
+  .previa { display: flex; justify-content: space-between; margin: 12px 6px 0; font-size: .92em; color: var(--soft); min-height: 1.4em; }
+  .previa .g { color: var(--green); font-weight: 600; } .previa .p { color: var(--red); font-weight: 600; }
+
+  /* Barra fija inferior */
+  .barra { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+    background: linear-gradient(to top, rgba(3, 4, 12, .92) 40%, rgba(3, 4, 12, 0)); }
+  .barra .btn { width: 100%; max-width: 528px; margin: 0 auto; display: flex; height: 60px; font-size: 1.08em; }
+  .barra .ayuda { text-align: center; font-size: .78em; color: var(--dim); margin-top: 8px; }
+
+  /* Resultado */
+  .resultado { text-align: center; padding: 30px 22px; margin-top: 2vh; }
+  .sello { width: 84px; height: 84px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center; }
+  .sello svg { width: 40px; height: 40px; }
+  .sello.ok { background: radial-gradient(circle, rgba(61, 255, 168, .35), rgba(61, 255, 168, .05)); box-shadow: 0 0 40px rgba(61, 255, 168, .35), inset 0 0 0 1px rgba(61, 255, 168, .6); color: var(--green); }
+  .sello.mal { background: radial-gradient(circle, rgba(255, 93, 115, .35), rgba(255, 93, 115, .05)); box-shadow: 0 0 40px rgba(255, 93, 115, .3), inset 0 0 0 1px rgba(255, 93, 115, .6); color: var(--red); }
+  .sello.nada { background: rgba(255, 255, 255, .06); box-shadow: inset 0 0 0 1px var(--line); color: var(--dim); }
+  .resultado h2 { font-size: 1.6em; margin-bottom: .3em; }
+  .resultado .det { color: var(--soft); margin: 0 auto 10px; max-width: 26em; }
+  .puntos { font-family: var(--f-display); font-weight: 700; font-size: 4.2em; line-height: 1; margin: 14px 0 4px;
+    background: linear-gradient(180deg, #fff, #c8d4ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .puntos-et { color: var(--dim); font-size: .85em; letter-spacing: .06em; }
+  .explica { text-align: left; margin: 20px 0 0; padding: 16px 18px; border-radius: 20px; line-height: 1.5; }
+  .explica b { display: block; font-family: var(--f-display); color: var(--green); margin-bottom: 4px; font-weight: 600; }
+  .acum { margin-top: 18px; color: var(--soft); font-size: .95em; }
+  .acum b { color: var(--ink); font-family: var(--f-display); }
+
+  /* Final */
+  .final { padding: 26px 20px; }
+  .final h2 { font-size: 1.7em; margin-bottom: .3em; }
+  .final .grande { font-family: var(--f-display); font-weight: 700; font-size: 3.2em; line-height: 1; margin: 6px 0 4px; }
+  .cal { display: grid; gap: 10px; margin: 18px 0 10px; }
+  .cal .fila { display: grid; grid-template-columns: 4em 1fr 3.6em; gap: 12px; align-items: center; }
+  .cal .ap { font-family: var(--f-display); font-weight: 600; }
+  .cal .riel { height: 12px; border-radius: 99px; background: rgba(255, 255, 255, .08); position: relative; overflow: hidden; }
+  .cal .riel i { position: absolute; inset: 0 auto 0 0; border-radius: 99px; background: linear-gradient(90deg, var(--cyan), var(--violet)); transition: width .8s var(--ease); }
+  .cal .riel u { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--gold); }
+  .cal .val { text-align: right; color: var(--soft); font-variant-numeric: tabular-nums; }
+  .final .nota { font-size: .88em; color: var(--dim); }
 </style>
 </head>
 <body>
+<div class="escena" aria-hidden="true"><div class="rayos"></div><i class="orbe o1"></i><i class="orbe o2"></i><i class="orbe o3"></i><div class="piso"></div></div>
 <main>
-  <header><span class="logo">La apuesta de <em>confianza</em></span><span id="quien"></span></header>
+  <div class="top">
+    <span class="marca">La apuesta de <b>confianza</b></span>
+    <span class="pill oculto" id="quien"></span>
+  </div>
 
-  <!-- Unirse -->
-  <section id="v-unirse" class="tarjeta">
-    <h2>Únete a la <em>partida</em></h2>
-    <p class="muted">Escribe el código que aparece en la pantalla del salón y un apodo. Nadie verá tu nombre real.</p>
-    <label for="codigo">Código de partida</label>
-    <input id="codigo" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="ABCD">
-    <label for="apodo">Tu apodo</label>
-    <input id="apodo" maxlength="20" autocomplete="off" placeholder="Ej. Sócrates_99">
-    <button id="b-unirse" class="primario full">Entrar</button>
+  <section id="v-unirse" class="vista glass unirse">
+    <h1>Entra al <span>juego</span></h1>
+    <p>Escribe el código que aparece en la pantalla del salón y elige un apodo. Nadie verá tu nombre real.</p>
+    <label class="campo"><span>CÓDIGO DE PARTIDA</span><input id="codigo" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text" placeholder="ABCD"></label>
+    <label class="campo"><span>TU APODO</span><input id="apodo" maxlength="20" autocomplete="off" spellcheck="false" placeholder="Sócrates_99"></label>
+    <button id="b-unirse" class="btn cian">Entrar</button>
     <p id="err-unirse" class="aviso oculto"></p>
   </section>
 
-  <!-- Esperando -->
-  <section id="v-espera" class="tarjeta centro oculto">
-    <p class="grande latido">⏳</p>
+  <section id="v-espera" class="vista glass espera oculto">
+    <div class="loader"></div>
     <h2 id="espera-titulo">Ya estás dentro</h2>
-    <p class="muted" id="espera-texto">Espera a que el profesor lance la primera pregunta.</p>
+    <p id="espera-texto">En cuanto el profesor lance la primera pregunta, aparecerá aquí.</p>
   </section>
 
-  <!-- Pregunta -->
-  <section id="v-pregunta" class="tarjeta oculto">
-    <div class="q-num" id="q-num"></div>
-    <div class="reloj"><i id="reloj"></i></div>
-    <div class="q-texto" id="q-texto"></div>
-    <div class="opciones" id="opciones"></div>
-    <label style="margin-top:1.2em">¿Qué tan seguro estás?</label>
-    <div class="apuestas" id="apuestas"></div>
-    <button id="b-enviar" class="oro full" disabled>Apostar</button>
-    <p class="dim centro" style="font-size:.85em;margin:.8em 0 0">Si aciertas con apuesta alta ganas mucho; si fallas con apuesta alta pierdes mucho.</p>
+  <section id="v-pregunta" class="vista oculto">
+    <div class="cab">
+      <span class="num" id="q-num"></span>
+      <div class="reloj" id="reloj"><svg viewBox="0 0 48 48"><circle class="fondo" cx="24" cy="24" r="21"/><circle class="arco" id="arco" cx="24" cy="24" r="21" stroke-dasharray="131.95" stroke-dashoffset="0"/></svg><b id="seg"></b></div>
+    </div>
+    <div class="loz pregunta"><div class="in" id="q-texto"></div></div>
+    <div class="respuestas" id="opciones" role="radiogroup" aria-label="Respuestas"></div>
+    <div class="seg-titulo"><span>¿QUÉ TAN SEGURO ESTÁS?</span></div>
+    <div class="segmentos glass" id="apuestas" role="radiogroup" aria-label="Apuesta"><span class="ficha" id="ficha"></span></div>
+    <div class="previa" id="previa"></div>
   </section>
 
-  <!-- Enviada -->
-  <section id="v-enviada" class="tarjeta centro oculto">
-    <p class="grande">✓</p>
-    <h2>Apuesta registrada</h2>
-    <p class="muted" id="enviada-resumen"></p>
-    <p class="dim latido">Espera a que se revele la respuesta…</p>
+  <section id="v-enviada" class="vista glass espera oculto">
+    <div class="loader" style="border-top-color:var(--gold)"></div>
+    <h2>Respuesta final</h2>
+    <p id="enviada-resumen"></p>
+    <p class="dim">Espera a que se revele la respuesta correcta.</p>
   </section>
 
-  <!-- Resultado -->
-  <section id="v-resultado" class="tarjeta centro oculto">
-    <p class="grande" id="res-icono"></p>
+  <section id="v-resultado" class="vista glass resultado oculto">
+    <div class="sello" id="sello"></div>
     <h2 id="res-titulo"></h2>
-    <p class="muted" id="res-detalle"></p>
-    <p class="grande" id="res-puntos"></p>
-    <p class="explica oculto" id="res-explica"></p>
-    <div class="total muted">Llevas <b id="res-total" style="color:var(--ink)"></b> puntos en promedio por pregunta.</div>
+    <p class="det" id="res-detalle"></p>
+    <div class="puntos" id="res-puntos">0</div>
+    <div class="puntos-et">PUNTOS EN ESTA PREGUNTA</div>
+    <div class="explica glass oculto" id="res-explica"><b>Por qué</b><span></span></div>
+    <div class="acum">Tu promedio va en <b id="res-total"></b> puntos por pregunta</div>
   </section>
 
-  <!-- Final -->
-  <section id="v-final" class="tarjeta oculto">
-    <h2>Fin de la <em>partida</em></h2>
-    <p class="muted">Tu promedio: <b id="fin-total" style="color:var(--ink);font-size:1.3em"></b> puntos por pregunta.</p>
-    <p class="muted" style="margin-bottom:.2em">Tu calibración: cuando apostaste cierto porcentaje, ¿cuántas veces acertaste?</p>
-    <table id="fin-tabla"></table>
-    <p class="dim" style="font-size:.9em">Una persona bien calibrada acierta más o menos el porcentaje que apuesta.</p>
+  <section id="v-final" class="vista glass final oculto">
+    <h2>Fin de la partida</h2>
+    <div class="soft">Tu promedio por pregunta</div>
+    <div class="grande" id="fin-total"></div>
+    <p class="soft" style="margin:18px 0 0">Cuando apostaste cada porcentaje, ¿cuántas veces acertaste? La línea dorada marca lo que habrías acertado estando bien calibrado.</p>
+    <div class="cal" id="fin-cal"></div>
+    <p class="nota">Si la barra queda por debajo de la línea, confiabas más de lo que sabías.</p>
   </section>
 </main>
+
+<div class="barra oculto" id="barra">
+  <button class="btn oro" id="b-enviar" disabled>Respuesta final</button>
+  <div class="ayuda" id="ayuda">Elige una respuesta y qué tan seguro estás</div>
+</div>
 
 <script type="module">
 import { db, entrar, ahoraServidor, puntos, LETRAS, APUESTAS, esc } from "./comun.js";
@@ -112,17 +174,41 @@ import { ref, get, set, onValue, serverTimestamp } from "https://www.gstatic.com
 
 const $ = (id) => document.getElementById(id);
 const vistas = ["v-unirse", "v-espera", "v-pregunta", "v-enviada", "v-resultado", "v-final"];
-const ver = (v) => vistas.forEach((x) => $(x).classList.toggle("oculto", x !== v));
+let actual = null;
+function ver(v) {
+  if (actual === v) return;
+  actual = v;
+  vistas.forEach((x) => $(x).classList.toggle("oculto", x !== v));
+  $("barra").classList.toggle("oculto", v !== "v-pregunta");
+}
+const ICONO = {
+  ok: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
+  mal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  nada: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 12h12"/></svg>'
+};
+const ETIQ = { 50: "ni idea", 70: "creo", 90: "casi seguro", 100: "seguro" };
+const vibrar = (ms) => { try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {} };
 
-let uid, codigo, preguntas = [], claves = {}, explicaciones = {}, mias = {}, estado = null, seleccion = { op: null, conf: null }, timer = null;
+let uid, codigo, preguntas = [], claves = {}, explicaciones = {}, mias = {}, estado = null;
+let sel = { op: null, conf: null }, qRender = null, timer = null, enviando = false;
 
-// Recordar la partida al recargar
+// Luz que sigue al dedo o al cursor sobre el vidrio
+addEventListener("pointermove", (e) => {
+  const g = e.target.closest && e.target.closest(".glass");
+  if (!g) return;
+  const r = g.getBoundingClientRect();
+  g.style.setProperty("--mx", (e.clientX - r.left) + "px");
+  g.style.setProperty("--my", (e.clientY - r.top) + "px");
+}, { passive: true });
+
 try {
   const g = JSON.parse(localStorage.getItem("apuesta") || "null");
   if (g) { $("codigo").value = g.codigo || ""; $("apodo").value = g.apodo || ""; }
 } catch (e) {}
+ver("v-unirse");
 
 $("b-unirse").addEventListener("click", unirse);
+$("codigo").addEventListener("input", (e) => { e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""); if (e.target.value.length === 4) $("apodo").focus(); });
 $("apodo").addEventListener("keydown", (e) => { if (e.key === "Enter") unirse(); });
 
 async function unirse() {
@@ -133,12 +219,13 @@ async function unirse() {
   try {
     uid = await entrar();
     const existe = await get(ref(db, `partidas/${c}/estado`));
-    if (!existe.exists()) throw new Error("No existe una partida con ese código. Revisa la pantalla del salón.");
+    if (!existe.exists()) throw new Error("No hay ninguna partida con ese código. Revisa la pantalla del salón.");
     const yo = await get(ref(db, `partidas/${c}/jugadores/${uid}`));
     if (!yo.exists()) await set(ref(db, `partidas/${c}/jugadores/${uid}`), { apodo: a.slice(0, 20), t: serverTimestamp() });
     codigo = c;
     try { localStorage.setItem("apuesta", JSON.stringify({ codigo: c, apodo: a })); } catch (e) {}
-    $("quien").textContent = (yo.exists() ? yo.val().apodo : a);
+    $("quien").textContent = yo.exists() ? yo.val().apodo : a;
+    $("quien").classList.remove("oculto");
     escuchar();
   } catch (e) {
     err.textContent = (e && e.code === "auth/admin-restricted-operation") ? "El juego todavía no está listo. Avísale al profesor." : (e.message || "No se pudo entrar. Intenta de nuevo.");
@@ -167,101 +254,145 @@ function promedio() {
   return Math.round(tot / qs.length);
 }
 
+function espera(titulo, texto) { $("espera-titulo").textContent = titulo; $("espera-texto").textContent = texto; ver("v-espera"); }
+
 function pintar() {
   if (!estado) return;
-  clearInterval(timer);
   const q = estado.qk, f = estado.fase;
-  if (f === "lobby") {
-    $("espera-titulo").textContent = "Ya estás dentro";
-    $("espera-texto").textContent = "Espera a que el profesor lance la primera pregunta.";
-    return ver("v-espera");
-  }
+  if (f !== "pregunta") { clearInterval(timer); timer = null; }
+  if (f === "lobby") return espera("Ya estás dentro", "En cuanto el profesor lance la primera pregunta, aparecerá aquí.");
   if (f === "pregunta") {
     if (mias[q]) {
-      $("enviada-resumen").textContent = `Elegiste ${LETRAS[mias[q].op]} y apostaste ${mias[q].conf} %.`;
+      clearInterval(timer); timer = null;
+      $("enviada-resumen").textContent = `Elegiste la ${LETRAS[mias[q].op]} y apostaste ${mias[q].conf} %.`;
       return ver("v-enviada");
     }
     return pintarPregunta(q);
   }
   if (f === "revelada") return pintarResultado(q);
-  if (f === "ranking") {
-    $("espera-titulo").textContent = "Mira la pantalla";
-    $("espera-texto").textContent = `Se está mostrando el ranking. Tu promedio: ${promedio()} puntos.`;
-    return ver("v-espera");
-  }
+  if (f === "ranking") return espera("Mira la pantalla", `Se está mostrando el ranking. Tu promedio va en ${promedio()} puntos por pregunta.`);
   if (f === "fin") return pintarFinal();
 }
 
 function pintarPregunta(q) {
   const p = preguntas[q];
   if (!p) return;
-  if ($("v-pregunta").dataset.q !== q) { seleccion = { op: null, conf: null }; $("v-pregunta").dataset.q = q; }
-  $("q-num").textContent = `Pregunta ${+q + 1} de ${preguntas.length}`;
-  $("q-texto").textContent = p.texto;
-  $("opciones").innerHTML = p.opciones.map((o, i) =>
-    `<button class="op ${seleccion.op === i ? "sel" : ""}" data-op="${i}"><b>${LETRAS[i]}</b><span>${esc(o)}</span></button>`).join("");
-  $("apuestas").innerHTML = APUESTAS.map((c) =>
-    `<button class="ap ${seleccion.conf === c ? "sel" : ""}" data-conf="${c}">${c}%<small>${c === 50 ? "ni idea" : c === 70 ? "creo" : c === 90 ? "casi seguro" : "seguro"}</small></button>`).join("");
-  $("opciones").querySelectorAll(".op").forEach((b) => b.onclick = () => { seleccion.op = +b.dataset.op; pintarPregunta(q); });
-  $("apuestas").querySelectorAll(".ap").forEach((b) => b.onclick = () => { seleccion.conf = +b.dataset.conf; pintarPregunta(q); });
-  const btn = $("b-enviar");
-  btn.disabled = seleccion.op === null || seleccion.conf === null;
-  btn.onclick = enviar;
-  const tick = () => {
-    const resta = Math.max(0, (estado.t0 || 0) + (estado.dur || 40) * 1000 - ahoraServidor());
-    $("reloj").style.width = (100 * resta / ((estado.dur || 40) * 1000)) + "%";
-  };
-  tick(); timer = setInterval(tick, 250);
+  if (qRender !== q) {
+    qRender = q; sel = { op: null, conf: null }; enviando = false;
+    $("q-num").textContent = `Pregunta ${+q + 1} de ${preguntas.length}`;
+    $("q-texto").textContent = p.texto;
+    $("opciones").innerHTML = p.opciones.map((o, i) =>
+      `<button class="loz" role="radio" aria-checked="false" data-op="${i}"><span class="in"><span class="letra">${LETRAS[i]}</span><span class="txt">${esc(o)}</span></span></button>`).join("");
+    $("apuestas").innerHTML = '<span class="ficha" id="ficha"></span>' + APUESTAS.map((c) =>
+      `<button role="radio" aria-pressed="false" data-conf="${c}"><b>${c}%</b><small>${ETIQ[c]}</small></button>`).join("");
+    $("opciones").querySelectorAll(".loz").forEach((b) => b.onclick = () => elegir(+b.dataset.op, null));
+    $("apuestas").querySelectorAll("button").forEach((b) => b.onclick = () => elegir(null, +b.dataset.conf));
+    $("b-enviar").onclick = enviar;
+    actualizarSeleccion();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  if (!timer) { tick(); timer = setInterval(tick, 250); }
   ver("v-pregunta");
 }
 
+function elegir(op, conf) {
+  if (enviando) return;
+  if (op !== null) sel.op = op;
+  if (conf !== null) sel.conf = conf;
+  vibrar(8);
+  actualizarSeleccion();
+}
+
+function actualizarSeleccion() {
+  $("opciones").querySelectorAll(".loz").forEach((b) => {
+    const on = +b.dataset.op === sel.op;
+    b.classList.toggle("sel", on); b.setAttribute("aria-checked", on);
+  });
+  const botones = [...$("apuestas").querySelectorAll("button")];
+  botones.forEach((b) => b.setAttribute("aria-pressed", +b.dataset.conf === sel.conf));
+  const ficha = $("ficha"), k = APUESTAS.indexOf(sel.conf);
+  ficha.style.opacity = k < 0 ? 0 : 1;
+  if (k >= 0) ficha.style.transform = `translateX(calc(${k * 100}% + ${k * 4}px))`;
+  const pv = $("previa");
+  pv.innerHTML = sel.conf === null ? '<span class="dim">Toca un porcentaje para ver lo que arriesgas</span>'
+    : `<span>Si aciertas <span class="g">${puntos(sel.conf, true)}</span></span><span>Si fallas <span class="p">${puntos(sel.conf, false)}</span></span>`;
+  const listo = sel.op !== null && sel.conf !== null;
+  $("b-enviar").disabled = !listo || enviando;
+  $("ayuda").textContent = listo ? `Vas con la ${LETRAS[sel.op]} al ${sel.conf} %. Puedes cambiar hasta que confirmes.`
+    : sel.op === null ? "Elige una respuesta" : "Ahora elige qué tan seguro estás";
+}
+
+function tick() {
+  if (!estado) return;
+  const total = (estado.dur || 40) * 1000;
+  const resta = Math.max(0, (estado.t0 || 0) + total - ahoraServidor());
+  $("arco").style.strokeDashoffset = 131.95 * (1 - resta / total);
+  $("seg").textContent = Math.ceil(resta / 1000);
+  $("reloj").classList.toggle("urge", resta < 10000);
+}
+
+addEventListener("keydown", (e) => {
+  if (actual !== "v-pregunta" || e.target.tagName === "INPUT") return;
+  const k = e.key.toUpperCase();
+  const i = LETRAS.indexOf(k);
+  if (i >= 0) elegir(i, null);
+  else if (["1", "2", "3", "4"].includes(k)) elegir(null, APUESTAS[+k - 1]);
+  else if (e.key === "Enter" && !$("b-enviar").disabled) enviar();
+});
+
 async function enviar() {
   const q = estado.qk;
-  if (seleccion.op === null || seleccion.conf === null) return;
-  $("b-enviar").disabled = true;
+  if (sel.op === null || sel.conf === null || enviando) return;
+  enviando = true; actualizarSeleccion(); vibrar([12, 40, 12]);
   try {
-    await set(ref(db, `partidas/${codigo}/respuestas/${q}/${uid}`), { op: seleccion.op, conf: seleccion.conf, t: serverTimestamp() });
+    await set(ref(db, `partidas/${codigo}/respuestas/${q}/${uid}`), { op: sel.op, conf: sel.conf, t: serverTimestamp() });
   } catch (e) {
-    alertaSuave("No se registró tu apuesta: la pregunta ya se cerró.");
+    espera("Pregunta cerrada", "No alcanzó a registrarse tu respuesta porque la pregunta ya se cerró.");
   }
 }
 
-function alertaSuave(msg) {
-  $("espera-titulo").textContent = "Pregunta cerrada";
-  $("espera-texto").textContent = msg;
-  ver("v-espera");
+function contar(el, hasta) {
+  const t0 = performance.now(), dur = 900;
+  const paso = (t) => { const k = Math.min(1, (t - t0) / dur); el.textContent = Math.round(hasta * (1 - Math.pow(1 - k, 3))); if (k < 1) requestAnimationFrame(paso); };
+  requestAnimationFrame(paso);
 }
 
+let qResultado = null;
 function pintarResultado(q) {
   const m = mias[q], c = claves[q], p = preguntas[q];
   if (c === undefined || !p) return;
-  const correcta = `${LETRAS[c]}) ${p.opciones[c]}`;
+  const correcta = `la ${LETRAS[c]}, ${p.opciones[c]}`;
+  const sello = $("sello");
+  let pts = 0;
   if (!m) {
-    $("res-icono").textContent = "—"; $("res-titulo").textContent = "No apostaste";
-    $("res-detalle").textContent = `La respuesta correcta era ${correcta}.`; $("res-puntos").textContent = "0";
+    sello.className = "sello nada"; sello.innerHTML = ICONO.nada;
+    $("res-titulo").textContent = "No alcanzaste a responder";
+    $("res-detalle").textContent = `La respuesta correcta era ${correcta}.`;
   } else {
-    const ok = m.op === c, pts = puntos(m.conf, ok);
-    $("res-icono").textContent = ok ? "✓" : "✗";
-    $("res-icono").className = "grande " + (ok ? "ok" : "mal");
-    $("res-titulo").textContent = ok ? "¡Acertaste!" : "Fallaste";
-    $("res-detalle").textContent = `Apostaste ${m.conf} %. La correcta era ${correcta}.` + (!ok && m.conf >= 90 ? " La sobreconfianza sale cara." : (ok && m.conf <= 50 ? " Sabías más de lo que creías." : ""));
-    $("res-puntos").textContent = `+${pts}`;
+    const ok = m.op === c; pts = puntos(m.conf, ok);
+    sello.className = "sello " + (ok ? "ok" : "mal"); sello.innerHTML = ok ? ICONO.ok : ICONO.mal;
+    $("res-titulo").textContent = ok ? "Acertaste" : "Fallaste";
+    let extra = "";
+    if (!ok && m.conf >= 90) extra = " Apostar tan alto y fallar cuesta caro.";
+    else if (ok && m.conf <= 50) extra = " Sabías más de lo que creías.";
+    $("res-detalle").textContent = `Apostaste ${m.conf} %. La correcta era ${correcta}.${extra}`;
   }
   const ex = explicaciones[q];
-  $("res-explica").textContent = ex ? "¿Por qué? " + ex : "";
   $("res-explica").classList.toggle("oculto", !ex);
+  $("res-explica").querySelector("span").textContent = ex || "";
   $("res-total").textContent = promedio();
+  if (qResultado !== q) { qResultado = q; contar($("res-puntos"), pts); vibrar(m && m.op === c ? 20 : [30, 60, 30]); }
   ver("v-resultado");
 }
 
 function pintarFinal() {
   $("fin-total").textContent = promedio();
-  const filas = APUESTAS.map((a) => {
+  $("fin-cal").innerHTML = APUESTAS.map((a) => {
     let n = 0, ok = 0;
     for (const q in claves) { const m = mias[q]; if (m && m.conf === a) { n++; if (m.op === claves[q]) ok++; } }
-    return `<tr><td>${a} %</td><td>${n} ${n === 1 ? "vez" : "veces"}</td><td>${n ? Math.round(100 * ok / n) + " %" : "—"}</td></tr>`;
+    const v = n ? Math.round(100 * ok / n) : null;
+    return `<div class="fila"><span class="ap">${a}%</span><span class="riel"><i style="width:${v ?? 0}%"></i><u style="left:calc(${a}% - 2px)"></u></span><span class="val">${v === null ? "sin usar" : v + " %"}</span></div>`;
   }).join("");
-  $("fin-tabla").innerHTML = `<tr><th>Apostaste</th><th>Usos</th><th>Acertaste</th></tr>` + filas;
   ver("v-final");
 }
 </script>

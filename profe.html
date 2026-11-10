@@ -3,86 +3,212 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Panel del profesor · La apuesta de confianza</title>
+<title>Panel del profesor, La apuesta de confianza</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="estilos.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   body { font-size: 18px; }
-  main { max-width: 1280px; margin: 0 auto; padding: 22px 28px 40px; }
-  .barra { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 20px; }
-  .titulo { font-family: var(--f-display); font-size: 1.6em; }
-  .titulo em { color: var(--cyan); }
-  .codigo { margin-left: auto; text-align: right; }
-  .codigo .c { font-size: 3.4em; font-weight: 700; letter-spacing: .18em; color: var(--gold); line-height: 1; }
-  .codigo .u { color: var(--soft); font-size: .9em; }
-  #qr { background: #fff; padding: 6px; border-radius: 6px; width: 112px; height: 112px; }
-  #qr img, #qr canvas { width: 100px !important; height: 100px !important; }
-  .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 22px; }
-  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
-  .controles { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
-  .controles button { font-size: 1em; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip { padding: .3em .8em; border-radius: 999px; border: 1px solid var(--line); background: rgba(79,227,255,.07); animation: pop .4s ease both; }
-  .chip.falta { border-color: rgba(255,207,122,.5); color: var(--gold); }
-  .chip.listo { border-color: rgba(94,230,168,.5); color: var(--green); }
-  @keyframes pop { from { transform: scale(.4); opacity: 0; } }
-  .q-texto { font-family: var(--f-display); font-size: 2em; line-height: 1.15; margin: .2em 0 .7em; }
-  .q-num { color: var(--gold); font-weight: 600; }
-  .op { display: grid; grid-template-columns: 2.2em 1fr 4.5em; gap: 12px; align-items: center; margin: 10px 0; }
-  .op .l { width: 2em; height: 2em; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--cyan); color: var(--cyan); font-weight: 700; }
-  .op.correcta .l { background: var(--green); border-color: var(--green); color: #032015; }
-  .op.incorrecta { opacity: .55; }
-  .op .txt { font-size: 1.15em; margin-bottom: 4px; }
-  .op .barra-op { height: 26px; background: rgba(79,227,255,.08); border-radius: 4px; display: flex; overflow: hidden; }
-  .op .barra-op span { height: 100%; transition: width .4s ease; }
-  .op .n { text-align: right; font-variant-numeric: tabular-nums; color: var(--soft); }
-  .leyenda { display: flex; gap: 14px; font-size: .85em; color: var(--soft); margin-top: 6px; }
-  .leyenda i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
-  .reloj { height: 8px; background: rgba(79,227,255,.15); border-radius: 4px; overflow: hidden; }
-  .reloj i { display: block; height: 100%; background: var(--cyan); transition: width .25s linear; }
-  .big { font-size: 2.6em; font-weight: 700; color: var(--ink); line-height: 1; }
-  .stat { margin-bottom: 16px; }
-  .stat .k { color: var(--soft); font-size: .9em; }
-  ol.rank { padding-left: 1.4em; font-size: 1.35em; }
-  ol.rank li { padding: .25em 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; animation: pop .4s ease both; }
-  ol.rank li b { color: var(--gold); }
-  select { min-width: 22em; }
-  .bloque { margin-bottom: 18px; }
-  .explica { margin-top: 18px; padding: 14px 16px; border-left: 3px solid var(--green); background: rgba(94,230,168,.08); border-radius: 6px; font-size: 1.15em; line-height: 1.4; }
-  .explica b { color: var(--green); }
-  .vel { display: flex; gap: 8px; align-items: center; color: var(--soft); font-size: .9em; }
+  main { max-width: 1440px; margin: 0 auto; padding: 22px 32px 150px; min-height: 100vh; }
+  .top { display: flex; align-items: center; gap: 18px; margin-bottom: 26px; }
+  .top .marca { font-size: 1.35em; }
+  .top .rol { color: var(--dim); font-size: .9em; padding-left: 18px; border-left: 1px solid var(--line); }
+  .top .der { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .codigo-mini { font-family: var(--f-display); font-weight: 700; letter-spacing: .28em; font-size: 1.5em; color: var(--gold); padding: 6px 18px 6px 24px; border-radius: 999px; }
+  .vista { animation: entrar .55s var(--ease) both; }
+  @keyframes entrar { from { opacity: 0; transform: translateY(14px) scale(.99); } }
+
+  /* Configuración */
+  .config h1 { font-size: 2.6em; margin-bottom: .2em; }
+  .config h1 span { background: linear-gradient(90deg, var(--cyan), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .config > p { color: var(--soft); margin: 0 0 26px; max-width: 40em; }
+  .bancos { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; margin-bottom: 26px; }
+  .banco { text-align: left; padding: 22px 22px 20px; border-radius: 26px; transition: transform .25s var(--ease), box-shadow .25s, border-color .25s; }
+  .banco:hover { transform: translateY(-3px); }
+  .banco .et { font-size: .78em; letter-spacing: .1em; color: var(--cyan); font-weight: 600; text-transform: uppercase; }
+  .banco h3 { font-size: 1.45em; margin: .35em 0 .4em; }
+  .banco p { color: var(--soft); margin: 0 0 16px; font-size: .95em; }
+  .banco .meta { display: flex; gap: 8px; flex-wrap: wrap; }
+  .banco[aria-pressed="true"] { border-color: rgba(255, 198, 92, .85); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .42), 0 0 0 1px rgba(255, 198, 92, .5), 0 24px 70px -24px rgba(255, 159, 46, .45); }
+  .banco[aria-pressed="true"] .et { color: var(--gold); }
+  .ajustes { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; }
+  .stepper { display: inline-flex; align-items: center; gap: 4px; padding: 5px; border-radius: 999px; }
+  .stepper button { width: 44px; height: 44px; border-radius: 50%; font-size: 1.3em; color: var(--soft); transition: background .2s; }
+  .stepper button:hover { background: rgba(255, 255, 255, .1); color: var(--ink); }
+  .stepper output { min-width: 5.2em; text-align: center; font-family: var(--f-display); font-weight: 600; }
+  .ajustes .btn { height: 58px; padding: 0 2em; font-size: 1.05em; }
+  .aviso { margin-top: 18px; max-width: 46em; }
+
+  /* Sala de espera */
+  .sala { display: grid; grid-template-columns: 1.15fr .85fr; gap: 26px; align-items: stretch; }
+  .entrada { padding: 38px 40px; display: flex; flex-direction: column; justify-content: center; }
+  .entrada .et { color: var(--dim); letter-spacing: .12em; font-size: .85em; }
+  .entrada .gigante { font-family: var(--f-display); font-weight: 700; font-size: 8.5em; letter-spacing: .14em; line-height: 1; margin: .08em 0 .12em;
+    background: linear-gradient(180deg, #fff4d6, var(--gold) 55%, var(--gold2)); -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 10px 40px rgba(255, 159, 46, .35)); }
+  .entrada .url { font-size: 1.35em; color: var(--soft); }
+  .entrada .fila { display: flex; gap: 26px; align-items: center; margin-top: 26px; }
+  #qr { background: #fff; padding: 10px; border-radius: 18px; width: 172px; height: 172px; flex: none; box-shadow: 0 20px 50px -20px rgba(0, 0, 0, .7); }
+  #qr img, #qr canvas { width: 152px !important; height: 152px !important; }
+  .entrada .fila p { margin: 0; color: var(--soft); }
+  .jugadores { padding: 30px 30px; display: flex; flex-direction: column; }
+  .jugadores .cuenta { font-family: var(--f-display); font-weight: 700; font-size: 4.4em; line-height: 1; }
+  .jugadores .cuenta small { font-size: .3em; font-weight: 400; color: var(--soft); margin-left: .4em; letter-spacing: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; align-content: flex-start; }
+  .chip { height: 38px; padding: 0 16px; display: inline-flex; align-items: center; border-radius: 999px; font-weight: 500;
+    background: rgba(255, 255, 255, .08); border: 1px solid rgba(255, 255, 255, .16); animation: aparecer .5s var(--ease) both; }
+  .chip.falta { color: var(--gold); border-color: rgba(255, 198, 92, .4); background: rgba(255, 198, 92, .08); }
+  @keyframes aparecer { from { opacity: 0; transform: scale(.6); } }
+
+  /* Escenario de pregunta */
+  .escenario { display: grid; grid-template-columns: 1fr 320px; gap: 26px; }
+  .cab { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; }
+  .reloj { width: 74px; height: 74px; position: relative; flex: none; }
+  .reloj svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .reloj circle { fill: none; stroke-width: 3.5; }
+  .reloj .fondo { stroke: rgba(255, 255, 255, .12); }
+  .reloj .arco { stroke: var(--cyan); stroke-linecap: round; transition: stroke-dashoffset .25s linear, stroke .3s; filter: drop-shadow(0 0 6px rgba(106, 228, 255, .6)); }
+  .reloj.urge .arco { stroke: var(--red); filter: drop-shadow(0 0 6px rgba(255, 93, 115, .7)); }
+  .reloj b { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--f-display); font-size: 1.45em; }
+  .cab .num { font-family: var(--f-display); font-weight: 600; font-size: 1.15em; color: var(--gold); }
+  .cab .estado { color: var(--dim); font-size: .95em; }
+  .loz.pregunta .in { font-family: var(--f-display); font-size: 1.85em; line-height: 1.22; min-height: 140px; padding: .9em 2.4em; }
+  .grid-resp { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 22px; margin-top: 22px; position: relative; }
+  .grid-resp::before, .grid-resp::after { content: ""; position: absolute; left: -32px; right: -32px; height: 1px; z-index: -1;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .35) 20%, rgba(255, 255, 255, .35) 80%, transparent); }
+  .grid-resp::before { top: 41px; } .grid-resp::after { bottom: 41px; }
+  .grid-resp .loz .in { min-height: 82px; font-size: 1.3em; padding-right: 5.2em; }
+  .grid-resp .relleno { position: absolute; left: 0; top: 0; bottom: 0; width: 0; z-index: 0; transition: width .6s var(--ease);
+    background: linear-gradient(90deg, rgba(106, 228, 255, .28), rgba(106, 228, 255, .06)); }
+  .grid-resp .loz.ok .relleno { background: linear-gradient(90deg, rgba(255, 255, 255, .3), rgba(255, 255, 255, .06)); }
+  .grid-resp .franja { position: absolute; left: 10%; right: 10%; bottom: 8px; height: 4px; display: flex; border-radius: 4px; overflow: hidden; z-index: 1; background: rgba(255, 255, 255, .06); }
+  .grid-resp .franja span { height: 100%; transition: width .6s var(--ease); }
+  .grid-resp .cuenta { position: absolute; right: 2.2em; top: 50%; transform: translateY(-50%); z-index: 1; font-family: var(--f-display); font-weight: 600; font-size: 1.05em; color: var(--soft); font-variant-numeric: tabular-nums; }
+  .leyenda { display: flex; gap: 20px; justify-content: center; margin-top: 18px; font-size: .9em; color: var(--dim); }
+  .leyenda i { display: inline-block; width: 18px; height: 4px; border-radius: 2px; margin-right: 8px; vertical-align: middle; }
+  .explica { margin-top: 22px; padding: 20px 26px; font-size: 1.25em; line-height: 1.45; border-radius: 24px; }
+  .explica b { display: block; font-family: var(--f-display); color: var(--green); margin-bottom: 6px; font-weight: 600; font-size: .9em; letter-spacing: .02em; }
+
+  /* Lateral */
+  .lado { display: flex; flex-direction: column; gap: 18px; }
+  .tarjeta { padding: 20px 22px; border-radius: 24px; }
+  .dato .k { color: var(--dim); font-size: .85em; letter-spacing: .04em; }
+  .dato .v { font-family: var(--f-display); font-weight: 700; font-size: 3em; line-height: 1.05; }
+  .dato .v small { font-size: .42em; font-weight: 400; color: var(--soft); }
+  .dato + .dato { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+  .escalera { list-style: none; margin: 0; padding: 10px; display: flex; flex-direction: column-reverse; gap: 4px; border-radius: 24px; }
+  .escalera li { display: flex; justify-content: space-between; align-items: center; height: 40px; padding: 0 16px; border-radius: 12px; color: var(--dim); font-family: var(--f-display); font-weight: 600; transition: background .3s, color .3s; }
+  .escalera li.hecha { color: var(--soft); }
+  .escalera li.hecha::after { content: ""; width: 7px; height: 7px; transform: rotate(45deg); background: var(--cyan); opacity: .7; }
+  .escalera li.actual { color: #2a1600; background: linear-gradient(180deg, #ffe2a1, var(--gold) 50%, var(--gold2)); box-shadow: 0 8px 26px -8px rgba(255, 159, 46, .7); }
+  .faltan { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .faltan .chip { height: 30px; font-size: .85em; padding: 0 12px; }
+
+  /* Ranking y final */
+  .podio { max-width: 980px; margin: 0 auto; }
+  .podio h2 { font-size: 2.4em; text-align: center; margin-bottom: .2em; }
+  .podio > p { text-align: center; color: var(--soft); margin: 0 0 26px; }
+  .ranking { display: grid; gap: 10px; }
+  .ranking .fila { display: grid; grid-template-columns: 64px 1fr 120px; align-items: center; height: 64px; padding: 0 26px; border-radius: 20px; animation: aparecer .5s var(--ease) both; }
+  .ranking .pos { font-family: var(--f-display); font-weight: 700; font-size: 1.4em; color: var(--dim); }
+  .ranking .fila:first-child { border-color: rgba(255, 198, 92, .7); }
+  .ranking .fila:first-child .pos, .ranking .fila:first-child .pts { color: var(--gold); }
+  .ranking .nom { font-size: 1.3em; font-weight: 500; }
+  .ranking .pts { font-family: var(--f-display); font-weight: 700; font-size: 1.6em; text-align: right; }
+  .final { display: grid; grid-template-columns: 1.3fr .7fr; gap: 26px; }
+  .final .tarjeta h2 { font-size: 1.9em; margin-bottom: .3em; }
+  .final .tarjeta > p { color: var(--soft); margin: 0 0 10px; }
+  .campeon .v { font-size: 2.4em; color: var(--gold); }
+
+  /* Dock */
+  .dock { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 10; display: flex; gap: 10px; align-items: center; padding: 10px; border-radius: 999px; }
+  .dock .btn { height: 54px; }
+  .dock .btn.principal { padding: 0 1.8em; font-size: 1.05em; }
+  .dock .tecla { font-size: .72em; opacity: .6; border: 1px solid currentColor; border-radius: 6px; padding: 1px 6px; margin-left: 4px; }
+  .dock .icono { width: 54px; padding: 0; }
+  @media (max-width: 1100px) { .escenario, .sala, .final { grid-template-columns: 1fr; } .entrada .gigante { font-size: 6em; } }
 </style>
 </head>
 <body>
+<div class="escena" aria-hidden="true"><div class="rayos"></div><i class="orbe o1"></i><i class="orbe o2"></i><i class="orbe o3"></i><div class="piso"></div></div>
 <main>
-  <div class="barra">
-    <div class="titulo">La apuesta de <em>confianza</em> · panel del profesor</div>
-    <div id="qr" class="oculto"></div>
-    <div class="codigo oculto" id="codigo-box"><div class="c" id="codigo"></div><div class="u" id="url"></div></div>
+  <div class="top">
+    <span class="marca">La apuesta de <b>confianza</b></span>
+    <span class="rol">Panel del profesor</span>
+    <div class="der"><span class="codigo-mini glass oculto" id="codigo-mini"></span></div>
   </div>
 
   <!-- Configuración -->
-  <section id="v-config" class="tarjeta">
-    <h2>Nueva <em>partida</em></h2>
-    <div class="bloque"><label class="muted">Banco de preguntas</label><br><select id="banco"></select></div>
-    <div class="bloque vel"><label for="dur">Segundos por pregunta</label><input id="dur" type="number" min="10" max="180" value="40" style="width:6em"></div>
-    <button id="b-crear" class="primario">Crear partida</button>
-    <button id="b-retomar" class="oculto"></button>
+  <section id="v-config" class="vista config">
+    <h1>Prepara la <span>partida</span></h1>
+    <p>Elige el banco de preguntas y el tiempo para responder. Al crear la partida aparece el código para que el grupo entre desde el celular.</p>
+    <div class="bancos" id="bancos"></div>
+    <div class="ajustes">
+      <div class="stepper glass" aria-label="Segundos por pregunta">
+        <button id="menos" aria-label="Menos tiempo">−</button><output id="dur-out"></output><button id="mas" aria-label="Más tiempo">+</button>
+      </div>
+      <button id="b-crear" class="btn cian">Crear partida</button>
+      <button id="b-retomar" class="btn oculto"></button>
+    </div>
     <p id="err" class="aviso oculto"></p>
   </section>
 
-  <!-- Juego -->
-  <section id="v-juego" class="oculto">
-    <div class="grid">
-      <div class="tarjeta" id="izq"></div>
-      <div class="tarjeta" id="der"></div>
+  <!-- Sala de espera -->
+  <section id="v-sala" class="vista sala oculto">
+    <div class="glass entrada">
+      <div class="et">CÓDIGO DE LA PARTIDA</div>
+      <div class="gigante" id="codigo"></div>
+      <div class="url" id="url"></div>
+      <div class="fila"><div id="qr"></div><p>Escanea el código o abre la dirección, escribe el código de la partida y elige un apodo.</p></div>
     </div>
-    <div class="controles" id="controles"></div>
+    <div class="glass jugadores">
+      <div class="cuenta" id="n-jug">0<small>conectados</small></div>
+      <div class="chips" id="chips"></div>
+    </div>
+  </section>
+
+  <!-- Pregunta -->
+  <section id="v-escenario" class="vista escenario oculto">
+    <div>
+      <div class="cab">
+        <div class="reloj" id="reloj"><svg viewBox="0 0 80 80"><circle class="fondo" cx="40" cy="40" r="35"/><circle class="arco" id="arco" cx="40" cy="40" r="35" stroke-dasharray="219.9" stroke-dashoffset="0"/></svg><b id="seg"></b></div>
+        <div><div class="num" id="q-num"></div><div class="estado" id="q-estado"></div></div>
+      </div>
+      <div class="loz pregunta"><div class="in" id="q-texto"></div></div>
+      <div class="grid-resp" id="resp"></div>
+      <div class="leyenda" id="leyenda"></div>
+      <div class="explica glass oculto" id="explica"><b>Por qué</b><span></span></div>
+    </div>
+    <aside class="lado">
+      <div class="glass tarjeta" id="datos"></div>
+      <ol class="glass escalera" id="escalera"></ol>
+    </aside>
+  </section>
+
+  <!-- Ranking -->
+  <section id="v-ranking" class="vista podio oculto">
+    <h2>Ranking</h2>
+    <p>Promedio de puntos por pregunta revelada. Quien no respondió una pregunta, suma cero en ella.</p>
+    <div class="ranking" id="ranking"></div>
+  </section>
+
+  <!-- Final -->
+  <section id="v-final" class="vista final oculto">
+    <div class="glass tarjeta">
+      <h2>Calibración del grupo</h2>
+      <p>Cuando el grupo apostó cada porcentaje, ¿qué proporción acertó? Un grupo bien calibrado cae sobre la diagonal; por debajo de ella, hubo exceso de confianza.</p>
+      <div id="curva"></div>
+    </div>
+    <div class="lado">
+      <div class="glass tarjeta campeon" id="campeon"></div>
+      <div class="ranking" id="ranking-fin"></div>
+    </div>
   </section>
 </main>
+
+<nav class="dock glass oculto" id="dock" aria-label="Controles de la partida"></nav>
 
 <script type="module">
 import { db, entrar, ahoraServidor, puntos, LETRAS, APUESTAS, nuevoCodigo, esc } from "./comun.js";
@@ -90,29 +216,62 @@ import { BANCOS } from "./preguntas.js";
 import { ref, get, set, update, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const $ = (id) => document.getElementById(id);
-const COLORES = { 50: "#5f8599", 70: "#19b3c2", 90: "#4fe3ff", 100: "#ffcf7a" };
-let uid, codigo, banco, estado = null, jugadores = {}, respuestas = {}, claves = {}, timer = null, verVotos = true;
+const COLORES = { 50: "#7f8bbd", 70: "#8b7bff", 90: "#6ae4ff", 100: "#ffc65c" };
+const SVG = {
+  play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>',
+  ojo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
+  ojoNo: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 3l18 18M10.6 5.1A10.6 10.6 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.2M6.6 6.6C3.9 8.4 2 12 2 12s3.6 7 10 7a9.9 9.9 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>',
+  podio: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 20h18M5 20v-6h4v6M10 20V8h4v12M15 20v-9h4v9"/></svg>',
+  pantalla: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
+  bajar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+  revelar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>'
+};
 
-$("banco").innerHTML = BANCOS.map((b, i) => `<option value="${i}">${esc(b.titulo)} (${b.preguntas.length} preguntas)</option>`).join("");
-const ponerDur = () => { $("dur").value = BANCOS[+$("banco").value].segundos || 40; };
-$("banco").onchange = ponerDur; ponerDur();
+let uid, codigo, banco, bancoIdx = 0, dur = BANCOS[0].segundos || 40;
+let estado = null, jugadores = {}, respuestas = {}, claves = {}, timer = null, verVotos = true, qRender = null, principal = null;
+
+// Luz que sigue al cursor sobre el vidrio
+addEventListener("pointermove", (e) => {
+  const g = e.target.closest && e.target.closest(".glass");
+  if (!g) return;
+  const r = g.getBoundingClientRect();
+  g.style.setProperty("--mx", (e.clientX - r.left) + "px");
+  g.style.setProperty("--my", (e.clientY - r.top) + "px");
+}, { passive: true });
+
+/* ---------- Configuración ---------- */
+function pintarBancos() {
+  $("bancos").innerHTML = BANCOS.map((b, i) => `
+    <button class="glass banco" aria-pressed="${i === bancoIdx}" data-i="${i}">
+      <div class="et">${esc(b.etiqueta || "")}</div>
+      <h3>${esc(b.titulo)}</h3>
+      <p>${esc(b.nota || "")}</p>
+      <div class="meta"><span class="pill">${b.preguntas.length} preguntas</span><span class="pill">${b.segundos || 40} segundos cada una</span></div>
+    </button>`).join("");
+  $("bancos").querySelectorAll(".banco").forEach((el) => el.onclick = () => { bancoIdx = +el.dataset.i; dur = BANCOS[bancoIdx].segundos || 40; pintarBancos(); pintarDur(); });
+}
+const pintarDur = () => { $("dur-out").textContent = `${dur} segundos`; };
+$("menos").onclick = () => { dur = Math.max(10, dur - 5); pintarDur(); };
+$("mas").onclick = () => { dur = Math.min(180, dur + 5); pintarDur(); };
+pintarBancos(); pintarDur();
 
 try { uid = await entrar(); }
 catch (e) {
   const err = $("err");
   err.textContent = (e && e.code === "auth/admin-restricted-operation")
-    ? "Falta activar el acceso anónimo en Firebase: Authentication → Método de acceso → Anónimo → Habilitar. Después recarga esta página."
+    ? "Falta activar el acceso anónimo en Firebase: Authentication, Método de acceso, Anónimo, Habilitar. Después recarga esta página."
     : "No se pudo conectar con Firebase: " + (e.message || e);
   err.classList.remove("oculto"); $("b-crear").disabled = true;
   throw e;
 }
+
 let guardada = null;
 try { guardada = JSON.parse(localStorage.getItem("apuesta-profe") || "null"); } catch (e) {}
 if (guardada) {
   const s = await get(ref(db, `partidas/${guardada.codigo}/owner`)).catch(() => null);
-  if (s && s.val() === uid) {
+  if (s && s.val() === uid && BANCOS[guardada.banco]) {
     const b = $("b-retomar");
-    b.textContent = `Retomar partida ${guardada.codigo}`;
+    b.textContent = `Retomar la partida ${guardada.codigo}`;
     b.classList.remove("oculto");
     b.onclick = () => abrir(guardada.codigo, BANCOS[guardada.banco]);
   }
@@ -120,9 +279,9 @@ if (guardada) {
 
 $("b-crear").onclick = async () => {
   const err = $("err"); err.classList.add("oculto");
+  $("b-crear").disabled = true;
   try {
-    const bi = +$("banco").value, b = BANCOS[bi];
-    const dur = Math.max(10, Math.min(180, +$("dur").value || 40));
+    const b = BANCOS[bancoIdx];
     let c, intentos = 0;
     do { c = nuevoCodigo(); intentos++; } while ((await get(ref(db, `partidas/${c}/owner`))).exists() && intentos < 10);
     await set(ref(db, `partidas/${c}`), {
@@ -130,30 +289,42 @@ $("b-crear").onclick = async () => {
       preguntas: b.preguntas.map((p) => ({ texto: p.texto, opciones: p.opciones })),
       estado: { fase: "lobby", qk: "-1", t0: 0, dur }
     });
-    try { localStorage.setItem("apuesta-profe", JSON.stringify({ codigo: c, banco: bi })); } catch (e) {}
+    try { localStorage.setItem("apuesta-profe", JSON.stringify({ codigo: c, banco: bancoIdx })); } catch (e) {}
     abrir(c, b);
   } catch (e) {
     err.textContent = "No se pudo crear la partida: " + (e.message || e);
-    err.classList.remove("oculto");
+    err.classList.remove("oculto"); $("b-crear").disabled = false;
   }
 };
 
 function abrir(c, b) {
   codigo = c; banco = b;
-  $("v-config").classList.add("oculto"); $("v-juego").classList.remove("oculto");
-  $("codigo").textContent = c; $("codigo-box").classList.remove("oculto");
+  $("v-config").classList.add("oculto");
+  $("codigo").textContent = c;
+  $("codigo-mini").textContent = c;
   const url = new URL("./", location.href).href;
-  $("url").textContent = url.replace(/^https?:\/\//, "");
-  $("qr").classList.remove("oculto"); $("qr").innerHTML = "";
-  try { new QRCode($("qr"), { text: url, width: 100, height: 100 }); } catch (e) {}
+  $("url").textContent = url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+  $("qr").innerHTML = "";
+  try { new QRCode($("qr"), { text: url, width: 152, height: 152, colorDark: "#070b24", colorLight: "#ffffff" }); } catch (e) {}
+  $("dock").classList.remove("oculto");
   onValue(ref(db, `partidas/${c}/estado`), (s) => { estado = s.val(); pintar(); });
   onValue(ref(db, `partidas/${c}/jugadores`), (s) => { jugadores = s.val() || {}; pintar(); });
   onValue(ref(db, `partidas/${c}/respuestas`), (s) => { respuestas = s.val() || {}; pintar(); });
   onValue(ref(db, `partidas/${c}/claves`), (s) => { claves = s.val() || {}; pintar(); });
 }
 
-const apodo = (u) => (jugadores[u] && jugadores[u].apodo) || "¿?";
+/* ---------- Acciones ---------- */
+const apodo = (u) => (jugadores[u] && jugadores[u].apodo) || "Sin apodo";
 const nPreg = () => banco.preguntas.length;
+async function lanzar(q) { await update(ref(db, `partidas/${codigo}/estado`), { fase: "pregunta", qk: String(q), t0: serverTimestamp(), dur: estado.dur || dur }); }
+async function revelar() {
+  const q = estado.qk;
+  await set(ref(db, `partidas/${codigo}/explicaciones/${q}`), banco.preguntas[+q].explicacion || "");
+  await set(ref(db, `partidas/${codigo}/claves/${q}`), banco.preguntas[+q].correcta);
+  await update(ref(db, `partidas/${codigo}/estado`), { fase: "revelada" });
+}
+const fase = (f) => update(ref(db, `partidas/${codigo}/estado`), { fase: f });
+function pantallaCompleta() { try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); } catch (e) {} }
 
 function promedios() {
   const qs = Object.keys(claves);
@@ -164,128 +335,154 @@ function promedios() {
   }).sort((a, b) => b.prom - a.prom);
 }
 
-function boton(txt, fn, cls = "") { const b = document.createElement("button"); b.textContent = txt; b.className = cls; b.onclick = fn; return b; }
+/* ---------- Dock ---------- */
+function dock(items) {
+  const d = $("dock"); d.innerHTML = ""; principal = null;
+  for (const it of items) {
+    const b = document.createElement("button");
+    b.className = "btn " + (it.cls || "") + (it.icono && !it.txt ? " icono" : "");
+    b.innerHTML = (it.icono ? SVG[it.icono] : "") + (it.txt ? `<span>${it.txt}</span>` : "") + (it.tecla ? `<span class="tecla">${it.tecla}</span>` : "");
+    if (it.titulo) b.title = it.titulo;
+    b.onclick = it.fn;
+    d.append(b);
+    if (it.principal) principal = it.fn;
+  }
+}
+function siguiente(q) {
+  return +q + 1 < nPreg()
+    ? { txt: `Lanzar la pregunta ${+q + 2}`, icono: "play", cls: "cian principal", tecla: "Espacio", principal: true, fn: () => lanzar(+q + 1) }
+    : { txt: "Terminar la partida", cls: "cian principal", tecla: "Espacio", principal: true, fn: () => fase("fin") };
+}
+const extra = [{ icono: "pantalla", titulo: "Pantalla completa (F)", fn: pantallaCompleta }];
 
-async function lanzar(q) {
-  await update(ref(db, `partidas/${codigo}/estado`), { fase: "pregunta", qk: String(q), t0: serverTimestamp(), dur: estado.dur || 40 });
-}
-async function revelar() {
-  const q = estado.qk;
-  await set(ref(db, `partidas/${codigo}/explicaciones/${q}`), banco.preguntas[+q].explicacion || "");
-  await set(ref(db, `partidas/${codigo}/claves/${q}`), banco.preguntas[+q].correcta);
-  await update(ref(db, `partidas/${codigo}/estado`), { fase: "revelada" });
-}
-const fase = (f) => update(ref(db, `partidas/${codigo}/estado`), { fase: f });
+addEventListener("keydown", (e) => {
+  if (e.target.tagName === "INPUT" || !estado) return;
+  if ((e.key === " " || e.key === "Enter") && principal) { e.preventDefault(); principal(); }
+  else if (e.key.toLowerCase() === "f") pantallaCompleta();
+  else if (e.key.toLowerCase() === "v" && estado.fase === "pregunta") { verVotos = !verVotos; pintar(); }
+  else if (e.key.toLowerCase() === "r" && estado.fase === "revelada") fase("ranking");
+});
+
+/* ---------- Pintado ---------- */
+const VISTAS = ["v-sala", "v-escenario", "v-ranking", "v-final"];
+let vistaActual = null;
+function ver(v) { if (vistaActual === v) return; vistaActual = v; VISTAS.forEach((x) => $(x).classList.toggle("oculto", x !== v)); }
 
 function pintar() {
   if (!estado) return;
-  clearInterval(timer);
-  const izq = $("izq"), der = $("der"), ctl = $("controles");
-  ctl.innerHTML = "";
-  const uids = Object.keys(jugadores);
   const f = estado.fase, q = estado.qk;
+  $("codigo-mini").classList.toggle("oculto", f === "lobby");
+  if (f !== "pregunta") { clearInterval(timer); timer = null; }
 
   if (f === "lobby") {
-    izq.innerHTML = `<h2>Entren con el <em>código</em></h2><p class="muted">Abran el enlace o escaneen el código QR, escriban el código <b style="color:var(--gold)">${codigo}</b> y un apodo.</p>
-      <div class="chips">${uids.map((u) => `<span class="chip">${esc(apodo(u))}</span>`).join("") || '<span class="dim">Todavía no entra nadie…</span>'}</div>`;
-    der.innerHTML = `<div class="stat"><div class="k">Jugadores conectados</div><div class="big">${uids.length}</div></div>
-      <p class="muted">Cómo se gana: apuesta alto solo cuando de verdad sepas.</p>${tablaPuntos()}`;
-    ctl.append(boton("Lanzar pregunta 1 ▶", () => lanzar(0), "primario"));
-    return;
+    const uids = Object.keys(jugadores);
+    $("n-jug").innerHTML = `${uids.length}<small>${uids.length === 1 ? "conectado" : "conectados"}</small>`;
+    $("chips").innerHTML = uids.map((u) => `<span class="chip">${esc(apodo(u))}</span>`).join("") || '<span class="dim">Todavía no entra nadie</span>';
+    dock([{ txt: "Lanzar la primera pregunta", icono: "play", cls: "cian principal", tecla: "Espacio", principal: true, fn: () => lanzar(0) }, ...extra]);
+    return ver("v-sala");
   }
-
-  const p = banco.preguntas[+q];
-  const rs = (respuestas[q]) || {};
-  const conteo = [0, 1, 2, 3].map((i) => APUESTAS.map((a) => Object.values(rs).filter((r) => r.op === i && r.conf === a).length));
-  const total = Object.keys(rs).length;
-  const revelada = f !== "pregunta";
-  const mostrar = verVotos || revelada;
-
-  if (f === "pregunta" || f === "revelada") {
-    izq.innerHTML = `<div class="q-num">Pregunta ${+q + 1} de ${nPreg()}</div>
-      ${f === "pregunta" ? '<div class="reloj"><i id="reloj"></i></div>' : ""}
-      <div class="q-texto">${esc(p.texto)}</div>
-      ${p.opciones.map((o, i) => {
-        const n = conteo[i].reduce((a, b) => a + b, 0);
-        const cls = revelada ? (i === p.correcta ? "correcta" : "incorrecta") : "";
-        const segs = mostrar ? APUESTAS.map((a, k) => `<span style="width:${total ? 100 * conteo[i][k] / total : 0}%;background:${COLORES[a]}"></span>`).join("") : "";
-        return `<div class="op ${cls}"><div class="l">${LETRAS[i]}</div><div><div class="txt">${esc(o)}</div><div class="barra-op">${segs}</div></div><div class="n">${mostrar ? n : "·"}</div></div>`;
-      }).join("")}
-      ${mostrar ? `<div class="leyenda">${APUESTAS.map((a) => `<span><i style="background:${COLORES[a]}"></i>apostó ${a} %</span>`).join("")}</div>` : ""}
-      ${revelada && p.explicacion ? `<div class="explica"><b>¿Por qué?</b> ${esc(p.explicacion)}</div>` : ""}`;
-
-    if (f === "pregunta") {
-      const faltan = uids.filter((u) => !rs[u]);
-      der.innerHTML = `<div class="stat"><div class="k">Ya apostaron</div><div class="big">${total} / ${uids.length}</div></div>
-        <div class="k muted" style="margin-bottom:6px">Faltan:</div>
-        <div class="chips">${faltan.map((u) => `<span class="chip falta">${esc(apodo(u))}</span>`).join("") || '<span class="chip listo">¡Todos listos!</span>'}</div>`;
-      const tick = () => {
-        const el = $("reloj"); if (!el) return;
-        const resta = Math.max(0, (estado.t0 || 0) + (estado.dur || 40) * 1000 - ahoraServidor());
-        el.style.width = (100 * resta / ((estado.dur || 40) * 1000)) + "%";
-      };
-      tick(); timer = setInterval(tick, 250);
-      ctl.append(boton("Revelar respuesta", revelar, "oro"));
-      ctl.append(boton(verVotos ? "Ocultar votos (modo proyector)" : "Mostrar votos en vivo", () => { verVotos = !verVotos; pintar(); }));
-    } else {
-      const vals = Object.values(rs);
-      const aciertos = vals.filter((r) => r.op === p.correcta).length;
-      const caros = Object.entries(rs).filter(([, r]) => r.conf === 100 && r.op !== p.correcta).map(([u]) => apodo(u));
-      const prom = vals.length ? Math.round(vals.reduce((s, r) => s + puntos(r.conf, r.op === p.correcta), 0) / vals.length) : 0;
-      der.innerHTML = `<div class="stat"><div class="k">Acertaron</div><div class="big">${total ? Math.round(100 * aciertos / total) : 0} %</div></div>
-        <div class="stat"><div class="k">Apostaron 100 % y fallaron</div><div class="big" style="color:var(--red)">${caros.length}</div></div>
-        <div class="stat"><div class="k">Puntos promedio del grupo</div><div class="big">${prom}</div></div>`;
-      ctl.append(boton("Ver ranking", () => fase("ranking")));
-      if (+q + 1 < nPreg()) ctl.append(boton(`Lanzar pregunta ${+q + 2} ▶`, () => lanzar(+q + 1), "primario"));
-      else ctl.append(boton("Terminar partida", () => fase("fin"), "primario"));
-    }
-    return;
-  }
-
+  if (f === "pregunta" || f === "revelada") return pintarEscenario(q, f);
   if (f === "ranking") {
-    const pr = promedios().slice(0, 10);
-    izq.innerHTML = `<h2>Ranking · <em>promedio por pregunta</em></h2><ol class="rank">${pr.map((x) => `<li><span>${esc(x.apodo)}</span><b>${x.prom}</b></li>`).join("")}</ol>`;
-    der.innerHTML = `<p class="muted">El promedio cuenta todas las preguntas reveladas. Si alguien no apostó en una, esa pregunta vale 0.</p>${tablaPuntos()}`;
-    if (+q + 1 < nPreg()) ctl.append(boton(`Lanzar pregunta ${+q + 2} ▶`, () => lanzar(+q + 1), "primario"));
-    else ctl.append(boton("Terminar partida", () => fase("fin"), "primario"));
-    return;
+    $("ranking").innerHTML = filasRanking(promedios().slice(0, 10));
+    dock([siguiente(q), ...extra]);
+    return ver("v-ranking");
   }
-
   if (f === "fin") {
     const pr = promedios();
-    izq.innerHTML = `<h2>Calibración del <em>grupo</em></h2><p class="muted">Cuando el grupo apostó cierto porcentaje, ¿cuántas veces acertó? Los puntos deberían quedar sobre la diagonal.</p>${curva()}`;
-    der.innerHTML = `<div class="stat"><div class="k">Mejor calibrado</div><div class="big" style="font-size:2em;color:var(--gold)">${pr[0] ? esc(pr[0].apodo) : "—"}</div><div class="muted">${pr[0] ? pr[0].prom + " puntos de promedio" : ""}</div></div>
-      <ol class="rank" style="font-size:1.05em">${pr.slice(0, 10).map((x) => `<li><span>${esc(x.apodo)}</span><b>${x.prom}</b></li>`).join("")}</ol>`;
-    ctl.append(boton("Descargar resultados (CSV)", descargar, "oro"));
-    ctl.append(boton("Nueva partida", () => { try { localStorage.removeItem("apuesta-profe"); } catch (e) {} location.reload(); }));
+    $("curva").innerHTML = curva();
+    $("campeon").innerHTML = `<div class="dato"><div class="k">MEJOR CALIBRADO</div><div class="v">${pr[0] ? esc(pr[0].apodo) : "Nadie"}</div><div class="soft">${pr[0] ? pr[0].prom + " puntos por pregunta" : ""}</div></div>`;
+    $("ranking-fin").innerHTML = filasRanking(pr.slice(0, 6));
+    dock([{ txt: "Descargar resultados", icono: "bajar", cls: "oro principal", fn: descargar },
+          { txt: "Nueva partida", fn: () => { try { localStorage.removeItem("apuesta-profe"); } catch (e) {} location.reload(); } }, ...extra]);
+    return ver("v-final");
   }
 }
 
-function tablaPuntos() {
-  return `<table style="width:100%;border-collapse:collapse;margin-top:10px;font-variant-numeric:tabular-nums">
-    <tr><th style="text-align:left;color:var(--dim);font-weight:400">Apuesta</th><th style="color:var(--dim);font-weight:400">Aciertas</th><th style="color:var(--dim);font-weight:400">Fallas</th></tr>
-    ${APUESTAS.map((a) => `<tr><td style="padding:.3em 0;border-top:1px solid var(--line)">${a} %</td><td style="text-align:center;border-top:1px solid var(--line);color:var(--green)">${puntos(a, true)}</td><td style="text-align:center;border-top:1px solid var(--line);color:var(--red)">${puntos(a, false)}</td></tr>`).join("")}</table>`;
+function filasRanking(pr) {
+  return pr.map((x, i) => `<div class="glass fila" style="animation-delay:${i * 60}ms"><span class="pos">${i + 1}</span><span class="nom">${esc(x.apodo)}</span><span class="pts">${x.prom}</span></div>`).join("")
+    || '<p class="soft" style="text-align:center">Aún no hay puntos.</p>';
+}
+
+function pintarEscenario(q, f) {
+  const p = banco.preguntas[+q];
+  const revelada = f === "revelada";
+  if (qRender !== q) {
+    qRender = q;
+    $("q-num").textContent = `Pregunta ${+q + 1} de ${nPreg()}`;
+    $("q-texto").textContent = p.texto;
+    $("resp").innerHTML = p.opciones.map((o, i) => `
+      <div class="loz" data-i="${i}"><div class="in"><span class="relleno"></span><span class="letra">${LETRAS[i]}</span><span class="txt">${esc(o)}</span>
+        <span class="franja">${APUESTAS.map((a) => `<span data-a="${a}" style="background:${COLORES[a]};width:0"></span>`).join("")}</span><span class="cuenta"></span></div></div>`).join("");
+    $("leyenda").innerHTML = APUESTAS.map((a) => `<span><i style="background:${COLORES[a]}"></i>apostó ${a} %</span>`).join("");
+    $("escalera").innerHTML = banco.preguntas.map((_, i) => `<li data-i="${i}"><span>${i + 1}</span></li>`).join("");
+  }
+  $("escalera").querySelectorAll("li").forEach((li) => { const i = +li.dataset.i; li.className = i === +q ? "actual" : (i < +q ? "hecha" : ""); });
+
+  const rs = respuestas[q] || {};
+  const vals = Object.values(rs), total = vals.length, uids = Object.keys(jugadores);
+  const mostrar = verVotos || revelada;
+  $("resp").querySelectorAll(".loz").forEach((el) => {
+    const i = +el.dataset.i, mios = vals.filter((r) => r.op === i), n = mios.length;
+    el.querySelector(".relleno").style.width = mostrar && total ? (100 * n / total) + "%" : "0";
+    el.querySelectorAll(".franja span").forEach((s) => { const a = +s.dataset.a; s.style.width = mostrar && total ? (100 * mios.filter((r) => r.conf === a).length / total) + "%" : "0"; });
+    el.querySelector(".cuenta").textContent = mostrar ? n : "";
+    el.classList.toggle("ok", revelada && i === p.correcta);
+    el.classList.toggle("apagado", revelada && i !== p.correcta);
+  });
+  $("leyenda").classList.toggle("oculto", !mostrar || revelada);
+  $("explica").classList.toggle("oculto", !(revelada && p.explicacion));
+  $("explica").querySelector("span").textContent = p.explicacion || "";
+
+  if (!revelada) {
+    $("q-estado").textContent = mostrar ? "Votos visibles en vivo" : "Votos ocultos para el proyector";
+    const faltan = uids.filter((u) => !rs[u]);
+    $("datos").innerHTML = `<div class="dato"><div class="k">YA RESPONDIERON</div><div class="v">${total}<small> de ${uids.length}</small></div></div>
+      <div class="faltan">${faltan.slice(0, 18).map((u) => `<span class="chip falta">${esc(apodo(u))}</span>`).join("")}${faltan.length > 18 ? `<span class="chip falta">y ${faltan.length - 18} más</span>` : ""}</div>`;
+    if (!timer) { tick(); timer = setInterval(tick, 250); }
+    dock([{ txt: "Revelar la respuesta", icono: "revelar", cls: "oro principal", tecla: "Espacio", principal: true, fn: revelar },
+          { icono: verVotos ? "ojo" : "ojoNo", titulo: verVotos ? "Ocultar votos (V)" : "Mostrar votos (V)", fn: () => { verVotos = !verVotos; pintar(); } }, ...extra]);
+  } else {
+    $("q-estado").textContent = "Respuesta revelada";
+    $("seg").textContent = ""; $("arco").style.strokeDashoffset = 219.9; $("reloj").classList.remove("urge");
+    const aciertos = vals.filter((r) => r.op === p.correcta).length;
+    const caros = vals.filter((r) => r.conf === 100 && r.op !== p.correcta).length;
+    const prom = total ? Math.round(vals.reduce((s, r) => s + puntos(r.conf, r.op === p.correcta), 0) / total) : 0;
+    $("datos").innerHTML = `<div class="dato"><div class="k">ACERTARON</div><div class="v">${total ? Math.round(100 * aciertos / total) : 0}<small> %</small></div></div>
+      <div class="dato"><div class="k">APOSTARON 100 % Y FALLARON</div><div class="v" style="color:var(--red)">${caros}</div></div>
+      <div class="dato"><div class="k">PUNTOS PROMEDIO DEL GRUPO</div><div class="v">${prom}</div></div>`;
+    dock([siguiente(q), { txt: "Ranking", icono: "podio", tecla: "R", fn: () => fase("ranking") }, ...extra]);
+  }
+  ver("v-escenario");
+}
+
+function tick() {
+  if (!estado) return;
+  const total = (estado.dur || 40) * 1000;
+  const resta = Math.max(0, (estado.t0 || 0) + total - ahoraServidor());
+  $("arco").style.strokeDashoffset = 219.9 * (1 - resta / total);
+  $("seg").textContent = Math.ceil(resta / 1000);
+  $("reloj").classList.toggle("urge", resta < 10000);
 }
 
 function curva() {
-  const W = 560, H = 360, x0 = 60, y0 = 310, sx = (v) => x0 + (v - 40) / 60 * 460, sy = (v) => y0 - v / 100 * 280;
+  const W = 640, H = 400, x0 = 70, y0 = 340, sx = (v) => x0 + (v - 40) / 65 * 540, sy = (v) => y0 - v / 100 * 300;
   let pts = "";
   for (const a of APUESTAS) {
     let n = 0, ok = 0;
     for (const q in claves) for (const u in (respuestas[q] || {})) { const r = respuestas[q][u]; if (r.conf === a) { n++; if (r.op === claves[q]) ok++; } }
     if (n) {
-      const v = 100 * ok / n;
-      pts += `<circle cx="${sx(a)}" cy="${sy(v)}" r="${6 + Math.min(14, n / 2)}" fill="${COLORES[a]}" fill-opacity=".85"/><text x="${sx(a)}" y="${sy(v) - 18}" text-anchor="middle" fill="#e2f6ff" font-size="15">${Math.round(v)} % (${n})</text>`;
+      const v = 100 * ok / n, r = 8 + Math.min(16, n / 2);
+      pts += `<line x1="${sx(a)}" y1="${sy(a)}" x2="${sx(a)}" y2="${sy(v)}" stroke="${v < a ? "#ff5d73" : "#3dffa8"}" stroke-width="2" stroke-dasharray="4 5" opacity=".8"/>
+        <circle cx="${sx(a)}" cy="${sy(v)}" r="${r}" fill="${COLORES[a]}" fill-opacity=".9" style="filter:drop-shadow(0 0 10px ${COLORES[a]})"/>
+        <text x="${sx(a)}" y="${sy(v) - r - 10}" text-anchor="middle" fill="#f2f6ff" font-size="16" font-family="Sora">${Math.round(v)} %</text>`;
     }
   }
-  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:640px">
-    <line x1="${x0}" y1="${y0}" x2="${sx(100)}" y2="${y0}" stroke="rgba(79,227,255,.35)"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="${sy(100)}" stroke="rgba(79,227,255,.35)"/>
-    <line x1="${sx(50)}" y1="${sy(50)}" x2="${sx(100)}" y2="${sy(100)}" stroke="#5ee6a8" stroke-dasharray="6 6"/>
-    <text x="${sx(100)}" y="${sy(100) - 8}" text-anchor="end" fill="#5ee6a8" font-size="13">calibración perfecta</text>
-    ${APUESTAS.map((a) => `<text x="${sx(a)}" y="${y0 + 24}" text-anchor="middle" fill="#9fc4d6" font-size="14">${a} %</text>`).join("")}
-    ${[0, 25, 50, 75, 100].map((v) => `<text x="${x0 - 10}" y="${sy(v) + 5}" text-anchor="end" fill="#5f8599" font-size="13">${v}</text>`).join("")}
-    <text x="${(x0 + sx(100)) / 2}" y="${H - 4}" text-anchor="middle" fill="#9fc4d6" font-size="14">Apuesta (confianza)</text>
-    <text x="16" y="${sy(50)}" fill="#9fc4d6" font-size="14" transform="rotate(-90 16 ${sy(50)})" text-anchor="middle">% de aciertos</text>
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:760px;display:block;margin:10px auto 0">
+    ${[0, 25, 50, 75, 100].map((v) => `<line x1="${x0}" y1="${sy(v)}" x2="${sx(105)}" y2="${sy(v)}" stroke="rgba(255,255,255,.07)"/><text x="${x0 - 14}" y="${sy(v) + 5}" text-anchor="end" fill="rgba(205,216,255,.5)" font-size="14">${v}</text>`).join("")}
+    <line x1="${sx(50)}" y1="${sy(50)}" x2="${sx(100)}" y2="${sy(100)}" stroke="#ffc65c" stroke-width="2" opacity=".85"/>
+    <text x="${sx(100) - 6}" y="${sy(100) - 12}" text-anchor="end" fill="#ffc65c" font-size="14">calibración perfecta</text>
+    ${APUESTAS.map((a) => `<text x="${sx(a)}" y="${y0 + 30}" text-anchor="middle" fill="rgba(226,234,255,.75)" font-size="15" font-family="Sora">${a} %</text>`).join("")}
+    <text x="${(x0 + sx(100)) / 2}" y="${H - 4}" text-anchor="middle" fill="rgba(205,216,255,.5)" font-size="14">Apuesta del grupo</text>
     ${pts}</svg>`;
 }
 
@@ -293,8 +490,7 @@ function descargar() {
   const filas = [["apodo", "pregunta", "opcion_elegida", "apuesta", "opcion_correcta", "acierto", "puntos"]];
   for (const q of Object.keys(claves).sort((a, b) => a - b)) {
     for (const u of Object.keys(jugadores)) {
-      const r = respuestas[q] && respuestas[q][u];
-      const c = claves[q];
+      const r = respuestas[q] && respuestas[q][u], c = claves[q];
       filas.push([apodo(u), +q + 1, r ? LETRAS[r.op] : "", r ? r.conf : "", LETRAS[c], r ? (r.op === c ? 1 : 0) : 0, r ? puntos(r.conf, r.op === c) : 0]);
     }
   }
