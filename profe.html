@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel del profesor · La apuesta de confianza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="estilos.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  body { font-size: 18px; }
+  main { max-width: 1280px; margin: 0 auto; padding: 22px 28px 40px; }
+  .barra { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 16px; margin-bottom: 20px; }
+  .titulo { font-family: var(--f-display); font-size: 1.6em; }
+  .titulo em { color: var(--cyan); }
+  .codigo { margin-left: auto; text-align: right; }
+  .codigo .c { font-size: 3.4em; font-weight: 700; letter-spacing: .18em; color: var(--gold); line-height: 1; }
+  .codigo .u { color: var(--soft); font-size: .9em; }
+  #qr { background: #fff; padding: 6px; border-radius: 6px; width: 112px; height: 112px; }
+  #qr img, #qr canvas { width: 100px !important; height: 100px !important; }
+  .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 22px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  .controles { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+  .controles button { font-size: 1em; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { padding: .3em .8em; border-radius: 999px; border: 1px solid var(--line); background: rgba(79,227,255,.07); animation: pop .4s ease both; }
+  .chip.falta { border-color: rgba(255,207,122,.5); color: var(--gold); }
+  .chip.listo { border-color: rgba(94,230,168,.5); color: var(--green); }
+  @keyframes pop { from { transform: scale(.4); opacity: 0; } }
+  .q-texto { font-family: var(--f-display); font-size: 2em; line-height: 1.15; margin: .2em 0 .7em; }
+  .q-num { color: var(--gold); font-weight: 600; }
+  .op { display: grid; grid-template-columns: 2.2em 1fr 4.5em; gap: 12px; align-items: center; margin: 10px 0; }
+  .op .l { width: 2em; height: 2em; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--cyan); color: var(--cyan); font-weight: 700; }
+  .op.correcta .l { background: var(--green); border-color: var(--green); color: #032015; }
+  .op.incorrecta { opacity: .55; }
+  .op .txt { font-size: 1.15em; margin-bottom: 4px; }
+  .op .barra-op { height: 26px; background: rgba(79,227,255,.08); border-radius: 4px; display: flex; overflow: hidden; }
+  .op .barra-op span { height: 100%; transition: width .4s ease; }
+  .op .n { text-align: right; font-variant-numeric: tabular-nums; color: var(--soft); }
+  .leyenda { display: flex; gap: 14px; font-size: .85em; color: var(--soft); margin-top: 6px; }
+  .leyenda i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+  .reloj { height: 8px; background: rgba(79,227,255,.15); border-radius: 4px; overflow: hidden; }
+  .reloj i { display: block; height: 100%; background: var(--cyan); transition: width .25s linear; }
+  .big { font-size: 2.6em; font-weight: 700; color: var(--ink); line-height: 1; }
+  .stat { margin-bottom: 16px; }
+  .stat .k { color: var(--soft); font-size: .9em; }
+  ol.rank { padding-left: 1.4em; font-size: 1.35em; }
+  ol.rank li { padding: .25em 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; animation: pop .4s ease both; }
+  ol.rank li b { color: var(--gold); }
+  select { min-width: 22em; }
+  .bloque { margin-bottom: 18px; }
+  .vel { display: flex; gap: 8px; align-items: center; color: var(--soft); font-size: .9em; }
+</style>
+</head>
+<body>
+<main>
+  <div class="barra">
+    <div class="titulo">La apuesta de <em>confianza</em> · panel del profesor</div>
+    <div id="qr" class="oculto"></div>
+    <div class="codigo oculto" id="codigo-box"><div class="c" id="codigo"></div><div class="u" id="url"></div></div>
+  </div>
+
+  <!-- Configuración -->
+  <section id="v-config" class="tarjeta">
+    <h2>Nueva <em>partida</em></h2>
+    <div class="bloque"><label class="muted">Banco de preguntas</label><br><select id="banco"></select></div>
+    <div class="bloque vel"><label for="dur">Segundos por pregunta</label><input id="dur" type="number" min="10" max="180" value="40" style="width:6em"></div>
+    <button id="b-crear" class="primario">Crear partida</button>
+    <button id="b-retomar" class="oculto"></button>
+    <p id="err" class="aviso oculto"></p>
+  </section>
+
+  <!-- Juego -->
+  <section id="v-juego" class="oculto">
+    <div class="grid">
+      <div class="tarjeta" id="izq"></div>
+      <div class="tarjeta" id="der"></div>
+    </div>
+    <div class="controles" id="controles"></div>
+  </section>
+</main>
+
+<script type="module">
+import { db, entrar, ahoraServidor, puntos, LETRAS, APUESTAS, nuevoCodigo, esc } from "./comun.js";
+import { BANCOS } from "./preguntas.js";
+import { ref, get, set, update, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const $ = (id) => document.getElementById(id);
+const COLORES = { 50: "#5f8599", 70: "#19b3c2", 90: "#4fe3ff", 100: "#ffcf7a" };
+let uid, codigo, banco, estado = null, jugadores = {}, respuestas = {}, claves = {}, timer = null, verVotos = true;
+
+$("banco").innerHTML = BANCOS.map((b, i) => `<option value="${i}">${esc(b.titulo)} (${b.preguntas.length} preguntas)</option>`).join("");
+
+uid = await entrar();
+let guardada = null;
+try { guardada = JSON.parse(localStorage.getItem("apuesta-profe") || "null"); } catch (e) {}
+if (guardada) {
+  const s = await get(ref(db, `partidas/${guardada.codigo}/owner`)).catch(() => null);
+  if (s && s.val() === uid) {
+    const b = $("b-retomar");
+    b.textContent = `Retomar partida ${guardada.codigo}`;
+    b.classList.remove("oculto");
+    b.onclick = () => abrir(guardada.codigo, BANCOS[guardada.banco]);
+  }
+}
+
+$("b-crear").onclick = async () => {
+  const err = $("err"); err.classList.add("oculto");
+  try {
+    const bi = +$("banco").value, b = BANCOS[bi];
+    const dur = Math.max(10, Math.min(180, +$("dur").value || 40));
+    let c, intentos = 0;
+    do { c = nuevoCodigo(); intentos++; } while ((await get(ref(db, `partidas/${c}/owner`))).exists() && intentos < 10);
+    await set(ref(db, `partidas/${c}`), {
+      owner: uid, creada: serverTimestamp(), banco: b.id, dur,
+      preguntas: b.preguntas.map((p) => ({ texto: p.texto, opciones: p.opciones })),
+      estado: { fase: "lobby", qk: "-1", t0: 0, dur }
+    });
+    try { localStorage.setItem("apuesta-profe", JSON.stringify({ codigo: c, banco: bi })); } catch (e) {}
+    abrir(c, b);
+  } catch (e) {
+    err.textContent = "No se pudo crear la partida: " + (e.message || e);
+    err.classList.remove("oculto");
+  }
+};
+
+function abrir(c, b) {
+  codigo = c; banco = b;
+  $("v-config").classList.add("oculto"); $("v-juego").classList.remove("oculto");
+  $("codigo").textContent = c; $("codigo-box").classList.remove("oculto");
+  const url = new URL("./", location.href).href;
+  $("url").textContent = url.replace(/^https?:\/\//, "");
+  $("qr").classList.remove("oculto"); $("qr").innerHTML = "";
+  try { new QRCode($("qr"), { text: url, width: 100, height: 100 }); } catch (e) {}
+  onValue(ref(db, `partidas/${c}/estado`), (s) => { estado = s.val(); pintar(); });
+  onValue(ref(db, `partidas/${c}/jugadores`), (s) => { jugadores = s.val() || {}; pintar(); });
+  onValue(ref(db, `partidas/${c}/respuestas`), (s) => { respuestas = s.val() || {}; pintar(); });
+  onValue(ref(db, `partidas/${c}/claves`), (s) => { claves = s.val() || {}; pintar(); });
+}
+
+const apodo = (u) => (jugadores[u] && jugadores[u].apodo) || "¿?";
+const nPreg = () => banco.preguntas.length;
+
+function promedios() {
+  const qs = Object.keys(claves);
+  return Object.keys(jugadores).map((u) => {
+    let tot = 0;
+    for (const q of qs) { const r = respuestas[q] && respuestas[q][u]; tot += r ? puntos(r.conf, r.op === claves[q]) : 0; }
+    return { u, apodo: apodo(u), prom: qs.length ? Math.round(tot / qs.length) : 0 };
+  }).sort((a, b) => b.prom - a.prom);
+}
+
+function boton(txt, fn, cls = "") { const b = document.createElement("button"); b.textContent = txt; b.className = cls; b.onclick = fn; return b; }
+
+async function lanzar(q) {
+  await update(ref(db, `partidas/${codigo}/estado`), { fase: "pregunta", qk: String(q), t0: serverTimestamp(), dur: estado.dur || 40 });
+}
+async function revelar() {
+  const q = estado.qk;
+  await set(ref(db, `partidas/${codigo}/claves/${q}`), banco.preguntas[+q].correcta);
+  await update(ref(db, `partidas/${codigo}/estado`), { fase: "revelada" });
+}
+const fase = (f) => update(ref(db, `partidas/${codigo}/estado`), { fase: f });
+
+function pintar() {
+  if (!estado) return;
+  clearInterval(timer);
+  const izq = $("izq"), der = $("der"), ctl = $("controles");
+  ctl.innerHTML = "";
+  const uids = Object.keys(jugadores);
+  const f = estado.fase, q = estado.qk;
+
+  if (f === "lobby") {
+    izq.innerHTML = `<h2>Entren con el <em>código</em></h2><p class="muted">Abran el enlace o escaneen el código QR, escriban el código <b style="color:var(--gold)">${codigo}</b> y un apodo.</p>
+      <div class="chips">${uids.map((u) => `<span class="chip">${esc(apodo(u))}</span>`).join("") || '<span class="dim">Todavía no entra nadie…</span>'}</div>`;
+    der.innerHTML = `<div class="stat"><div class="k">Jugadores conectados</div><div class="big">${uids.length}</div></div>
+      <p class="muted">Cómo se gana: apuesta alto solo cuando de verdad sepas.</p>${tablaPuntos()}`;
+    ctl.append(boton("Lanzar pregunta 1 ▶", () => lanzar(0), "primario"));
+    return;
+  }
+
+  const p = banco.preguntas[+q];
+  const rs = (respuestas[q]) || {};
+  const conteo = [0, 1, 2, 3].map((i) => APUESTAS.map((a) => Object.values(rs).filter((r) => r.op === i && r.conf === a).length));
+  const total = Object.keys(rs).length;
+  const revelada = f !== "pregunta";
+  const mostrar = verVotos || revelada;
+
+  if (f === "pregunta" || f === "revelada") {
+    izq.innerHTML = `<div class="q-num">Pregunta ${+q + 1} de ${nPreg()}</div>
+      ${f === "pregunta" ? '<div class="reloj"><i id="reloj"></i></div>' : ""}
+      <div class="q-texto">${esc(p.texto)}</div>
+      ${p.opciones.map((o, i) => {
+        const n = conteo[i].reduce((a, b) => a + b, 0);
+        const cls = revelada ? (i === p.correcta ? "correcta" : "incorrecta") : "";
+        const segs = mostrar ? APUESTAS.map((a, k) => `<span style="width:${total ? 100 * conteo[i][k] / total : 0}%;background:${COLORES[a]}"></span>`).join("") : "";
+        return `<div class="op ${cls}"><div class="l">${LETRAS[i]}</div><div><div class="txt">${esc(o)}</div><div class="barra-op">${segs}</div></div><div class="n">${mostrar ? n : "·"}</div></div>`;
+      }).join("")}
+      ${mostrar ? `<div class="leyenda">${APUESTAS.map((a) => `<span><i style="background:${COLORES[a]}"></i>apostó ${a} %</span>`).join("")}</div>` : ""}`;
+
+    if (f === "pregunta") {
+      const faltan = uids.filter((u) => !rs[u]);
+      der.innerHTML = `<div class="stat"><div class="k">Ya apostaron</div><div class="big">${total} / ${uids.length}</div></div>
+        <div class="k muted" style="margin-bottom:6px">Faltan:</div>
+        <div class="chips">${faltan.map((u) => `<span class="chip falta">${esc(apodo(u))}</span>`).join("") || '<span class="chip listo">¡Todos listos!</span>'}</div>`;
+      const tick = () => {
+        const el = $("reloj"); if (!el) return;
+        const resta = Math.max(0, (estado.t0 || 0) + (estado.dur || 40) * 1000 - ahoraServidor());
+        el.style.width = (100 * resta / ((estado.dur || 40) * 1000)) + "%";
+      };
+      tick(); timer = setInterval(tick, 250);
+      ctl.append(boton("Revelar respuesta", revelar, "oro"));
+      ctl.append(boton(verVotos ? "Ocultar votos (modo proyector)" : "Mostrar votos en vivo", () => { verVotos = !verVotos; pintar(); }));
+    } else {
+      const vals = Object.values(rs);
+      const aciertos = vals.filter((r) => r.op === p.correcta).length;
+      const caros = Object.entries(rs).filter(([, r]) => r.conf === 100 && r.op !== p.correcta).map(([u]) => apodo(u));
+      const prom = vals.length ? Math.round(vals.reduce((s, r) => s + puntos(r.conf, r.op === p.correcta), 0) / vals.length) : 0;
+      der.innerHTML = `<div class="stat"><div class="k">Acertaron</div><div class="big">${total ? Math.round(100 * aciertos / total) : 0} %</div></div>
+        <div class="stat"><div class="k">Apostaron 100 % y fallaron</div><div class="big" style="color:var(--red)">${caros.length}</div></div>
+        <div class="stat"><div class="k">Puntos promedio del grupo</div><div class="big">${prom}</div></div>`;
+      ctl.append(boton("Ver ranking", () => fase("ranking")));
+      if (+q + 1 < nPreg()) ctl.append(boton(`Lanzar pregunta ${+q + 2} ▶`, () => lanzar(+q + 1), "primario"));
+      else ctl.append(boton("Terminar partida", () => fase("fin"), "primario"));
+    }
+    return;
+  }
+
+  if (f === "ranking") {
+    const pr = promedios().slice(0, 10);
+    izq.innerHTML = `<h2>Ranking · <em>promedio por pregunta</em></h2><ol class="rank">${pr.map((x) => `<li><span>${esc(x.apodo)}</span><b>${x.prom}</b></li>`).join("")}</ol>`;
+    der.innerHTML = `<p class="muted">El promedio cuenta todas las preguntas reveladas. Si alguien no apostó en una, esa pregunta vale 0.</p>${tablaPuntos()}`;
+    if (+q + 1 < nPreg()) ctl.append(boton(`Lanzar pregunta ${+q + 2} ▶`, () => lanzar(+q + 1), "primario"));
+    else ctl.append(boton("Terminar partida", () => fase("fin"), "primario"));
+    return;
+  }
+
+  if (f === "fin") {
+    const pr = promedios();
+    izq.innerHTML = `<h2>Calibración del <em>grupo</em></h2><p class="muted">Cuando el grupo apostó cierto porcentaje, ¿cuántas veces acertó? Los puntos deberían quedar sobre la diagonal.</p>${curva()}`;
+    der.innerHTML = `<div class="stat"><div class="k">Mejor calibrado</div><div class="big" style="font-size:2em;color:var(--gold)">${pr[0] ? esc(pr[0].apodo) : "—"}</div><div class="muted">${pr[0] ? pr[0].prom + " puntos de promedio" : ""}</div></div>
+      <ol class="rank" style="font-size:1.05em">${pr.slice(0, 10).map((x) => `<li><span>${esc(x.apodo)}</span><b>${x.prom}</b></li>`).join("")}</ol>`;
+    ctl.append(boton("Descargar resultados (CSV)", descargar, "oro"));
+    ctl.append(boton("Nueva partida", () => { try { localStorage.removeItem("apuesta-profe"); } catch (e) {} location.reload(); }));
+  }
+}
+
+function tablaPuntos() {
+  return `<table style="width:100%;border-collapse:collapse;margin-top:10px;font-variant-numeric:tabular-nums">
+    <tr><th style="text-align:left;color:var(--dim);font-weight:400">Apuesta</th><th style="color:var(--dim);font-weight:400">Aciertas</th><th style="color:var(--dim);font-weight:400">Fallas</th></tr>
+    ${APUESTAS.map((a) => `<tr><td style="padding:.3em 0;border-top:1px solid var(--line)">${a} %</td><td style="text-align:center;border-top:1px solid var(--line);color:var(--green)">${puntos(a, true)}</td><td style="text-align:center;border-top:1px solid var(--line);color:var(--red)">${puntos(a, false)}</td></tr>`).join("")}</table>`;
+}
+
+function curva() {
+  const W = 560, H = 360, x0 = 60, y0 = 310, sx = (v) => x0 + (v - 40) / 60 * 460, sy = (v) => y0 - v / 100 * 280;
+  let pts = "";
+  for (const a of APUESTAS) {
+    let n = 0, ok = 0;
+    for (const q in claves) for (const u in (respuestas[q] || {})) { const r = respuestas[q][u]; if (r.conf === a) { n++; if (r.op === claves[q]) ok++; } }
+    if (n) {
+      const v = 100 * ok / n;
+      pts += `<circle cx="${sx(a)}" cy="${sy(v)}" r="${6 + Math.min(14, n / 2)}" fill="${COLORES[a]}" fill-opacity=".85"/><text x="${sx(a)}" y="${sy(v) - 18}" text-anchor="middle" fill="#e2f6ff" font-size="15">${Math.round(v)} % (${n})</text>`;
+    }
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:640px">
+    <line x1="${x0}" y1="${y0}" x2="${sx(100)}" y2="${y0}" stroke="rgba(79,227,255,.35)"/><line x1="${x0}" y1="${y0}" x2="${x0}" y2="${sy(100)}" stroke="rgba(79,227,255,.35)"/>
+    <line x1="${sx(50)}" y1="${sy(50)}" x2="${sx(100)}" y2="${sy(100)}" stroke="#5ee6a8" stroke-dasharray="6 6"/>
+    <text x="${sx(100)}" y="${sy(100) - 8}" text-anchor="end" fill="#5ee6a8" font-size="13">calibración perfecta</text>
+    ${APUESTAS.map((a) => `<text x="${sx(a)}" y="${y0 + 24}" text-anchor="middle" fill="#9fc4d6" font-size="14">${a} %</text>`).join("")}
+    ${[0, 25, 50, 75, 100].map((v) => `<text x="${x0 - 10}" y="${sy(v) + 5}" text-anchor="end" fill="#5f8599" font-size="13">${v}</text>`).join("")}
+    <text x="${(x0 + sx(100)) / 2}" y="${H - 4}" text-anchor="middle" fill="#9fc4d6" font-size="14">Apuesta (confianza)</text>
+    <text x="16" y="${sy(50)}" fill="#9fc4d6" font-size="14" transform="rotate(-90 16 ${sy(50)})" text-anchor="middle">% de aciertos</text>
+    ${pts}</svg>`;
+}
+
+function descargar() {
+  const filas = [["apodo", "pregunta", "opcion_elegida", "apuesta", "opcion_correcta", "acierto", "puntos"]];
+  for (const q of Object.keys(claves).sort((a, b) => a - b)) {
+    for (const u of Object.keys(jugadores)) {
+      const r = respuestas[q] && respuestas[q][u];
+      const c = claves[q];
+      filas.push([apodo(u), +q + 1, r ? LETRAS[r.op] : "", r ? r.conf : "", LETRAS[c], r ? (r.op === c ? 1 : 0) : 0, r ? puntos(r.conf, r.op === c) : 0]);
+    }
+  }
+  const csv = "﻿" + filas.map((f) => f.map((x) => `"${String(x).replace(/"/g, '""')}"`).join(",")).join("\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
+  a.download = `apuesta-${codigo}.csv`;
+  a.click();
+}
+</script>
+</body>
+</html>

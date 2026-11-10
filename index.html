@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>La apuesta de confianza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="estilos.css">
+<style>
+  main { max-width: 520px; margin: 0 auto; padding: max(18px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom)); }
+  header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; color: var(--soft); font-size: .9em; }
+  .logo { font-family: var(--f-display); font-size: 1.15em; color: var(--ink); }
+  .logo em { color: var(--cyan); }
+  label { display: block; font-size: .9em; color: var(--soft); margin: .8em 0 .3em; }
+  input { width: 100%; font-size: 1.15em; }
+  #codigo { text-transform: uppercase; letter-spacing: .3em; text-align: center; font-weight: 700; }
+  .full { width: 100%; margin-top: 1.1em; font-size: 1.1em; padding: .9em; }
+  .q-num { color: var(--gold); font-weight: 600; font-size: .9em; }
+  .q-texto { font-family: var(--f-display); font-size: 1.5em; line-height: 1.2; margin: .3em 0 .8em; }
+  .opciones { display: grid; gap: .55em; }
+  .op { display: flex; gap: .7em; align-items: center; text-align: left; padding: .85em 1em; font-size: 1.05em; }
+  .op b { display: inline-grid; place-items: center; width: 1.8em; height: 1.8em; border-radius: 50%; border: 1px solid var(--cyan); color: var(--cyan); flex: none; }
+  .op.sel { border-color: var(--gold); background: rgba(255, 207, 122, .14); }
+  .op.sel b { background: var(--gold); color: #2a1c00; border-color: var(--gold); }
+  .apuestas { display: grid; grid-template-columns: repeat(4, 1fr); gap: .45em; }
+  .ap { padding: .8em .2em; font-weight: 700; font-size: 1.1em; }
+  .ap small { display: block; font-weight: 400; font-size: .7em; color: var(--soft); }
+  .ap.sel { border-color: var(--gold); background: rgba(255, 207, 122, .18); }
+  .reloj { height: 6px; background: rgba(79, 227, 255, .15); border-radius: 3px; overflow: hidden; margin: .4em 0 1em; }
+  .reloj i { display: block; height: 100%; background: var(--cyan); width: 100%; transition: width .25s linear; }
+  .grande { font-family: var(--f-display); font-size: 3.2em; line-height: 1; margin: .1em 0; }
+  .centro { text-align: center; }
+  .ok { color: var(--green); } .mal { color: var(--red); }
+  .total { margin-top: 1.2em; padding-top: 1em; border-top: 1px solid var(--line); }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; margin-top: .6em; }
+  td, th { padding: .35em .4em; border-bottom: 1px solid var(--line); text-align: right; }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--dim); font-weight: 400; }
+  .latido { animation: latido 1.6s ease-in-out infinite; }
+  @keyframes latido { 50% { opacity: .45; } }
+</style>
+</head>
+<body>
+<main>
+  <header><span class="logo">La apuesta de <em>confianza</em></span><span id="quien"></span></header>
+
+  <!-- Unirse -->
+  <section id="v-unirse" class="tarjeta">
+    <h2>Únete a la <em>partida</em></h2>
+    <p class="muted">Escribe el código que aparece en la pantalla del salón y un apodo. Nadie verá tu nombre real.</p>
+    <label for="codigo">Código de partida</label>
+    <input id="codigo" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="ABCD">
+    <label for="apodo">Tu apodo</label>
+    <input id="apodo" maxlength="20" autocomplete="off" placeholder="Ej. Sócrates_99">
+    <button id="b-unirse" class="primario full">Entrar</button>
+    <p id="err-unirse" class="aviso oculto"></p>
+  </section>
+
+  <!-- Esperando -->
+  <section id="v-espera" class="tarjeta centro oculto">
+    <p class="grande latido">⏳</p>
+    <h2 id="espera-titulo">Ya estás dentro</h2>
+    <p class="muted" id="espera-texto">Espera a que el profesor lance la primera pregunta.</p>
+  </section>
+
+  <!-- Pregunta -->
+  <section id="v-pregunta" class="tarjeta oculto">
+    <div class="q-num" id="q-num"></div>
+    <div class="reloj"><i id="reloj"></i></div>
+    <div class="q-texto" id="q-texto"></div>
+    <div class="opciones" id="opciones"></div>
+    <label style="margin-top:1.2em">¿Qué tan seguro estás?</label>
+    <div class="apuestas" id="apuestas"></div>
+    <button id="b-enviar" class="oro full" disabled>Apostar</button>
+    <p class="dim centro" style="font-size:.85em;margin:.8em 0 0">Si aciertas con apuesta alta ganas mucho; si fallas con apuesta alta pierdes mucho.</p>
+  </section>
+
+  <!-- Enviada -->
+  <section id="v-enviada" class="tarjeta centro oculto">
+    <p class="grande">✓</p>
+    <h2>Apuesta registrada</h2>
+    <p class="muted" id="enviada-resumen"></p>
+    <p class="dim latido">Espera a que se revele la respuesta…</p>
+  </section>
+
+  <!-- Resultado -->
+  <section id="v-resultado" class="tarjeta centro oculto">
+    <p class="grande" id="res-icono"></p>
+    <h2 id="res-titulo"></h2>
+    <p class="muted" id="res-detalle"></p>
+    <p class="grande" id="res-puntos"></p>
+    <div class="total muted">Llevas <b id="res-total" style="color:var(--ink)"></b> puntos en promedio por pregunta.</div>
+  </section>
+
+  <!-- Final -->
+  <section id="v-final" class="tarjeta oculto">
+    <h2>Fin de la <em>partida</em></h2>
+    <p class="muted">Tu promedio: <b id="fin-total" style="color:var(--ink);font-size:1.3em"></b> puntos por pregunta.</p>
+    <p class="muted" style="margin-bottom:.2em">Tu calibración: cuando apostaste cierto porcentaje, ¿cuántas veces acertaste?</p>
+    <table id="fin-tabla"></table>
+    <p class="dim" style="font-size:.9em">Una persona bien calibrada acierta más o menos el porcentaje que apuesta.</p>
+  </section>
+</main>
+
+<script type="module">
+import { db, entrar, ahoraServidor, puntos, LETRAS, APUESTAS, esc } from "./comun.js";
+import { ref, get, set, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const $ = (id) => document.getElementById(id);
+const vistas = ["v-unirse", "v-espera", "v-pregunta", "v-enviada", "v-resultado", "v-final"];
+const ver = (v) => vistas.forEach((x) => $(x).classList.toggle("oculto", x !== v));
+
+let uid, codigo, preguntas = [], claves = {}, mias = {}, estado = null, seleccion = { op: null, conf: null }, timer = null;
+
+// Recordar la partida al recargar
+try {
+  const g = JSON.parse(localStorage.getItem("apuesta") || "null");
+  if (g) { $("codigo").value = g.codigo || ""; $("apodo").value = g.apodo || ""; }
+} catch (e) {}
+
+$("b-unirse").addEventListener("click", unirse);
+$("apodo").addEventListener("keydown", (e) => { if (e.key === "Enter") unirse(); });
+
+async function unirse() {
+  const c = $("codigo").value.trim().toUpperCase(), a = $("apodo").value.trim();
+  const err = $("err-unirse"); err.classList.add("oculto");
+  if (c.length !== 4 || !a) { err.textContent = "Escribe el código de 4 caracteres y un apodo."; err.classList.remove("oculto"); return; }
+  $("b-unirse").disabled = true;
+  try {
+    uid = await entrar();
+    const existe = await get(ref(db, `partidas/${c}/estado`));
+    if (!existe.exists()) throw new Error("No existe una partida con ese código. Revisa la pantalla del salón.");
+    const yo = await get(ref(db, `partidas/${c}/jugadores/${uid}`));
+    if (!yo.exists()) await set(ref(db, `partidas/${c}/jugadores/${uid}`), { apodo: a.slice(0, 20), t: serverTimestamp() });
+    codigo = c;
+    try { localStorage.setItem("apuesta", JSON.stringify({ codigo: c, apodo: a })); } catch (e) {}
+    $("quien").textContent = (yo.exists() ? yo.val().apodo : a);
+    escuchar();
+  } catch (e) {
+    err.textContent = e.message || "No se pudo entrar. Intenta de nuevo.";
+    err.classList.remove("oculto");
+    $("b-unirse").disabled = false;
+  }
+}
+
+function escuchar() {
+  onValue(ref(db, `partidas/${codigo}/preguntas`), (s) => { preguntas = s.val() || []; pintar(); });
+  onValue(ref(db, `partidas/${codigo}/claves`), (s) => { claves = s.val() || {}; pintar(); });
+  onValue(ref(db, `partidas/${codigo}/estado`), (s) => { estado = s.val(); pintar(); });
+  onValue(ref(db, `partidas/${codigo}/respuestas`), (s) => {
+    const r = s.val() || {}; mias = {};
+    for (const q in r) if (r[q] && r[q][uid]) mias[q] = r[q][uid];
+    pintar();
+  });
+}
+
+function promedio() {
+  const qs = Object.keys(claves);
+  if (!qs.length) return 0;
+  let tot = 0;
+  for (const q of qs) { const m = mias[q]; tot += m ? puntos(m.conf, m.op === claves[q]) : 0; }
+  return Math.round(tot / qs.length);
+}
+
+function pintar() {
+  if (!estado) return;
+  clearInterval(timer);
+  const q = estado.qk, f = estado.fase;
+  if (f === "lobby") {
+    $("espera-titulo").textContent = "Ya estás dentro";
+    $("espera-texto").textContent = "Espera a que el profesor lance la primera pregunta.";
+    return ver("v-espera");
+  }
+  if (f === "pregunta") {
+    if (mias[q]) {
+      $("enviada-resumen").textContent = `Elegiste ${LETRAS[mias[q].op]} y apostaste ${mias[q].conf} %.`;
+      return ver("v-enviada");
+    }
+    return pintarPregunta(q);
+  }
+  if (f === "revelada") return pintarResultado(q);
+  if (f === "ranking") {
+    $("espera-titulo").textContent = "Mira la pantalla";
+    $("espera-texto").textContent = `Se está mostrando el ranking. Tu promedio: ${promedio()} puntos.`;
+    return ver("v-espera");
+  }
+  if (f === "fin") return pintarFinal();
+}
+
+function pintarPregunta(q) {
+  const p = preguntas[q];
+  if (!p) return;
+  if ($("v-pregunta").dataset.q !== q) { seleccion = { op: null, conf: null }; $("v-pregunta").dataset.q = q; }
+  $("q-num").textContent = `Pregunta ${+q + 1} de ${preguntas.length}`;
+  $("q-texto").textContent = p.texto;
+  $("opciones").innerHTML = p.opciones.map((o, i) =>
+    `<button class="op ${seleccion.op === i ? "sel" : ""}" data-op="${i}"><b>${LETRAS[i]}</b><span>${esc(o)}</span></button>`).join("");
+  $("apuestas").innerHTML = APUESTAS.map((c) =>
+    `<button class="ap ${seleccion.conf === c ? "sel" : ""}" data-conf="${c}">${c}%<small>${c === 50 ? "ni idea" : c === 70 ? "creo" : c === 90 ? "casi seguro" : "seguro"}</small></button>`).join("");
+  $("opciones").querySelectorAll(".op").forEach((b) => b.onclick = () => { seleccion.op = +b.dataset.op; pintarPregunta(q); });
+  $("apuestas").querySelectorAll(".ap").forEach((b) => b.onclick = () => { seleccion.conf = +b.dataset.conf; pintarPregunta(q); });
+  const btn = $("b-enviar");
+  btn.disabled = seleccion.op === null || seleccion.conf === null;
+  btn.onclick = enviar;
+  const tick = () => {
+    const resta = Math.max(0, (estado.t0 || 0) + (estado.dur || 40) * 1000 - ahoraServidor());
+    $("reloj").style.width = (100 * resta / ((estado.dur || 40) * 1000)) + "%";
+  };
+  tick(); timer = setInterval(tick, 250);
+  ver("v-pregunta");
+}
+
+async function enviar() {
+  const q = estado.qk;
+  if (seleccion.op === null || seleccion.conf === null) return;
+  $("b-enviar").disabled = true;
+  try {
+    await set(ref(db, `partidas/${codigo}/respuestas/${q}/${uid}`), { op: seleccion.op, conf: seleccion.conf, t: serverTimestamp() });
+  } catch (e) {
+    alertaSuave("No se registró tu apuesta: la pregunta ya se cerró.");
+  }
+}
+
+function alertaSuave(msg) {
+  $("espera-titulo").textContent = "Pregunta cerrada";
+  $("espera-texto").textContent = msg;
+  ver("v-espera");
+}
+
+function pintarResultado(q) {
+  const m = mias[q], c = claves[q], p = preguntas[q];
+  if (c === undefined || !p) return;
+  const correcta = `${LETRAS[c]}) ${p.opciones[c]}`;
+  if (!m) {
+    $("res-icono").textContent = "—"; $("res-titulo").textContent = "No apostaste";
+    $("res-detalle").textContent = `La respuesta correcta era ${correcta}.`; $("res-puntos").textContent = "0";
+  } else {
+    const ok = m.op === c, pts = puntos(m.conf, ok);
+    $("res-icono").textContent = ok ? "✓" : "✗";
+    $("res-icono").className = "grande " + (ok ? "ok" : "mal");
+    $("res-titulo").textContent = ok ? "¡Acertaste!" : "Fallaste";
+    $("res-detalle").textContent = `Apostaste ${m.conf} %. La correcta era ${correcta}.` + (!ok && m.conf >= 90 ? " La sobreconfianza sale cara." : (ok && m.conf <= 50 ? " Sabías más de lo que creías." : ""));
+    $("res-puntos").textContent = `+${pts}`;
+  }
+  $("res-total").textContent = promedio();
+  ver("v-resultado");
+}
+
+function pintarFinal() {
+  $("fin-total").textContent = promedio();
+  const filas = APUESTAS.map((a) => {
+    let n = 0, ok = 0;
+    for (const q in claves) { const m = mias[q]; if (m && m.conf === a) { n++; if (m.op === claves[q]) ok++; } }
+    return `<tr><td>${a} %</td><td>${n} ${n === 1 ? "vez" : "veces"}</td><td>${n ? Math.round(100 * ok / n) + " %" : "—"}</td></tr>`;
+  }).join("");
+  $("fin-tabla").innerHTML = `<tr><th>Apostaste</th><th>Usos</th><th>Acertaste</th></tr>` + filas;
+  ver("v-final");
+}
+</script>
+</body>
+</html>
