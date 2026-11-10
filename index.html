@@ -38,6 +38,7 @@
   td, th { padding: .35em .4em; border-bottom: 1px solid var(--line); text-align: right; }
   th:first-child, td:first-child { text-align: left; }
   th { color: var(--dim); font-weight: 400; }
+  .explica { text-align: left; margin: .6em 0 0; padding: .8em 1em; border-left: 3px solid var(--green); background: rgba(94,230,168,.08); border-radius: 6px; color: var(--ink); line-height: 1.4; }
   .latido { animation: latido 1.6s ease-in-out infinite; }
   @keyframes latido { 50% { opacity: .45; } }
 </style>
@@ -91,6 +92,7 @@
     <h2 id="res-titulo"></h2>
     <p class="muted" id="res-detalle"></p>
     <p class="grande" id="res-puntos"></p>
+    <p class="explica oculto" id="res-explica"></p>
     <div class="total muted">Llevas <b id="res-total" style="color:var(--ink)"></b> puntos en promedio por pregunta.</div>
   </section>
 
@@ -112,7 +114,7 @@ const $ = (id) => document.getElementById(id);
 const vistas = ["v-unirse", "v-espera", "v-pregunta", "v-enviada", "v-resultado", "v-final"];
 const ver = (v) => vistas.forEach((x) => $(x).classList.toggle("oculto", x !== v));
 
-let uid, codigo, preguntas = [], claves = {}, mias = {}, estado = null, seleccion = { op: null, conf: null }, timer = null;
+let uid, codigo, preguntas = [], claves = {}, explicaciones = {}, mias = {}, estado = null, seleccion = { op: null, conf: null }, timer = null;
 
 // Recordar la partida al recargar
 try {
@@ -148,6 +150,7 @@ async function unirse() {
 function escuchar() {
   onValue(ref(db, `partidas/${codigo}/preguntas`), (s) => { preguntas = s.val() || []; pintar(); });
   onValue(ref(db, `partidas/${codigo}/claves`), (s) => { claves = s.val() || {}; pintar(); });
+  onValue(ref(db, `partidas/${codigo}/explicaciones`), (s) => { explicaciones = s.val() || {}; pintar(); });
   onValue(ref(db, `partidas/${codigo}/estado`), (s) => { estado = s.val(); pintar(); });
   onValue(ref(db, `partidas/${codigo}/respuestas`), (s) => {
     const r = s.val() || {}; mias = {};
@@ -244,6 +247,9 @@ function pintarResultado(q) {
     $("res-detalle").textContent = `Apostaste ${m.conf} %. La correcta era ${correcta}.` + (!ok && m.conf >= 90 ? " La sobreconfianza sale cara." : (ok && m.conf <= 50 ? " Sabías más de lo que creías." : ""));
     $("res-puntos").textContent = `+${pts}`;
   }
+  const ex = explicaciones[q];
+  $("res-explica").textContent = ex ? "¿Por qué? " + ex : "";
+  $("res-explica").classList.toggle("oculto", !ex);
   $("res-total").textContent = promedio();
   ver("v-resultado");
 }

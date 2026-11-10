@@ -51,6 +51,8 @@
   ol.rank li b { color: var(--gold); }
   select { min-width: 22em; }
   .bloque { margin-bottom: 18px; }
+  .explica { margin-top: 18px; padding: 14px 16px; border-left: 3px solid var(--green); background: rgba(94,230,168,.08); border-radius: 6px; font-size: 1.15em; line-height: 1.4; }
+  .explica b { color: var(--green); }
   .vel { display: flex; gap: 8px; align-items: center; color: var(--soft); font-size: .9em; }
 </style>
 </head>
@@ -92,6 +94,8 @@ const COLORES = { 50: "#5f8599", 70: "#19b3c2", 90: "#4fe3ff", 100: "#ffcf7a" };
 let uid, codigo, banco, estado = null, jugadores = {}, respuestas = {}, claves = {}, timer = null, verVotos = true;
 
 $("banco").innerHTML = BANCOS.map((b, i) => `<option value="${i}">${esc(b.titulo)} (${b.preguntas.length} preguntas)</option>`).join("");
+const ponerDur = () => { $("dur").value = BANCOS[+$("banco").value].segundos || 40; };
+$("banco").onchange = ponerDur; ponerDur();
 
 try { uid = await entrar(); }
 catch (e) {
@@ -167,6 +171,7 @@ async function lanzar(q) {
 }
 async function revelar() {
   const q = estado.qk;
+  await set(ref(db, `partidas/${codigo}/explicaciones/${q}`), banco.preguntas[+q].explicacion || "");
   await set(ref(db, `partidas/${codigo}/claves/${q}`), banco.preguntas[+q].correcta);
   await update(ref(db, `partidas/${codigo}/estado`), { fase: "revelada" });
 }
@@ -206,7 +211,8 @@ function pintar() {
         const segs = mostrar ? APUESTAS.map((a, k) => `<span style="width:${total ? 100 * conteo[i][k] / total : 0}%;background:${COLORES[a]}"></span>`).join("") : "";
         return `<div class="op ${cls}"><div class="l">${LETRAS[i]}</div><div><div class="txt">${esc(o)}</div><div class="barra-op">${segs}</div></div><div class="n">${mostrar ? n : "·"}</div></div>`;
       }).join("")}
-      ${mostrar ? `<div class="leyenda">${APUESTAS.map((a) => `<span><i style="background:${COLORES[a]}"></i>apostó ${a} %</span>`).join("")}</div>` : ""}`;
+      ${mostrar ? `<div class="leyenda">${APUESTAS.map((a) => `<span><i style="background:${COLORES[a]}"></i>apostó ${a} %</span>`).join("")}</div>` : ""}
+      ${revelada && p.explicacion ? `<div class="explica"><b>¿Por qué?</b> ${esc(p.explicacion)}</div>` : ""}`;
 
     if (f === "pregunta") {
       const faltan = uids.filter((u) => !rs[u]);
