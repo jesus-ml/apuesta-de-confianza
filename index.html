@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#03040c">
+<meta name="theme-color" content="#f0eee9">
 <title>La apuesta de confianza</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="estilos.css">
 <style>
   main { max-width: 560px; margin: 0 auto; min-height: 100dvh; display: flex; flex-direction: column;
@@ -19,34 +19,34 @@
 
   /* Unirse */
   .unirse { padding: 28px 22px; margin-top: 6vh; }
-  .unirse h1 { font-size: 2em; margin-bottom: .35em; }
-  .unirse h1 span { background: linear-gradient(90deg, var(--cyan), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .unirse h1 { font-size: 2.6em; margin-bottom: .3em; }
+  .unirse h1 span { font-style: italic; color: var(--mocha); }
   .unirse p { color: var(--soft); margin: 0 0 22px; }
   .campo { display: block; margin-bottom: 14px; }
   .campo span { display: block; font-size: .82em; color: var(--dim); margin: 0 0 6px 4px; letter-spacing: .04em; }
   .campo input { width: 100%; height: 58px; border-radius: 18px; padding: 0 18px; font: inherit; font-size: 1.15em; color: var(--ink);
-    background: rgba(0, 0, 0, .25); border: 1px solid rgba(255, 255, 255, .16); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06); transition: border-color .2s, background .2s; }
-  .campo input:focus { outline: none; border-color: var(--cyan); background: rgba(0, 0, 0, .35); }
-  #codigo { text-transform: uppercase; letter-spacing: .5em; text-align: center; font-family: var(--f-display); font-weight: 700; font-size: 1.6em; padding-left: .5em; }
+    background: rgba(255, 255, 255, .6); border: 1px solid rgba(43, 39, 36, .12); box-shadow: inset 0 1px 2px rgba(80, 60, 45, .06); transition: border-color .2s, background .2s; }
+  .campo input:focus { outline: none; border-color: var(--mocha); background: rgba(255, 255, 255, .9); }
+  #codigo { text-transform: uppercase; letter-spacing: .5em; text-align: center; font-family: var(--f-num); font-weight: 600; font-size: 1.5em; padding-left: .5em; }
   .unirse .btn { width: 100%; margin-top: 10px; height: 58px; font-size: 1.05em; }
   .aviso { margin-top: 14px; }
 
   /* Espera */
   .espera { margin-top: 10vh; padding: 40px 24px; text-align: center; display: grid; justify-items: center; gap: 14px; }
-  .espera h2 { font-size: 1.5em; }
+  .espera h2 { font-size: 2em; }
   .espera p { color: var(--soft); margin: 0; max-width: 26em; }
 
   /* Pregunta */
   .cab { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-  .cab .num { font-family: var(--f-display); font-weight: 600; color: var(--gold); letter-spacing: .02em; }
+  .cab .num { font-size: .85em; font-weight: 600; color: var(--mocha); letter-spacing: .08em; text-transform: uppercase; }
   .reloj { width: 46px; height: 46px; position: relative; }
   .reloj svg { width: 100%; height: 100%; transform: rotate(-90deg); }
   .reloj circle { fill: none; stroke-width: 3; }
-  .reloj .fondo { stroke: rgba(255, 255, 255, .12); }
-  .reloj .arco { stroke: var(--cyan); stroke-linecap: round; transition: stroke-dashoffset .25s linear, stroke .3s; }
-  .reloj b { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--f-display); font-size: .95em; }
+  .reloj .fondo { stroke: rgba(43, 39, 36, .1); }
+  .reloj .arco { stroke: var(--mocha); stroke-linecap: round; transition: stroke-dashoffset .25s linear, stroke .3s; }
+  .reloj b { position: absolute; inset: 0; display: grid; place-items: center; font-size: .85em; font-weight: 600; font-variant-numeric: tabular-nums; }
   .reloj.urge .arco { stroke: var(--red); }
-  .loz.pregunta .in { font-family: var(--f-display); font-size: 1.18em; line-height: 1.3; min-height: 120px; padding: 1.2em 2.6em; }
+  .loz.pregunta .in { font-family: var(--f-display); font-size: 1.38em; line-height: 1.18; min-height: 110px; padding: 1em 2.4em; }
   .respuestas { display: grid; gap: 10px; margin: 16px 0 22px; }
   .respuestas .loz:active:not(:disabled) { transform: scale(.985); }
   .respuestas .loz .in { font-size: 1.04em; }
@@ -54,19 +54,19 @@
   .seg-titulo span { font-size: .85em; color: var(--dim); letter-spacing: .04em; }
   .segmentos { display: grid; grid-template-columns: repeat(4, 1fr); padding: 5px; gap: 4px; border-radius: 22px; position: relative; }
   .segmentos button { position: relative; z-index: 1; height: 62px; border-radius: 17px; display: grid; place-content: center; gap: 2px; transition: color .2s; }
-  .segmentos button b { font-family: var(--f-display); font-size: 1.2em; }
+  .segmentos button b { font-size: 1.1em; font-weight: 600; font-variant-numeric: tabular-nums; }
   .segmentos button small { font-size: .7em; color: var(--dim); transition: color .2s; }
-  .segmentos button[aria-pressed="true"] { color: #2a1600; }
-  .segmentos button[aria-pressed="true"] small { color: rgba(42, 22, 0, .7); }
+  .segmentos button[aria-pressed="true"] { color: #fff; }
+  .segmentos button[aria-pressed="true"] small { color: rgba(255, 255, 255, .8); }
   .segmentos .ficha { position: absolute; z-index: 0; top: 5px; bottom: 5px; width: calc((100% - 22px) / 4); left: 5px; border-radius: 17px; opacity: 0;
-    background: linear-gradient(180deg, #ffe2a1, var(--gold) 50%, var(--gold2)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .7), 0 8px 24px -8px rgba(255, 159, 46, .7);
+    background: linear-gradient(180deg, #b48a76, var(--mocha)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, .3), 0 8px 20px -8px rgba(126, 90, 73, .6);
     transition: transform .35s var(--ease), opacity .25s; }
   .previa { display: flex; justify-content: space-between; margin: 12px 6px 0; font-size: .92em; color: var(--soft); min-height: 1.4em; }
-  .previa .g { color: var(--green); font-weight: 600; } .previa .p { color: var(--red); font-weight: 600; }
+  .previa .g { color: var(--sage-d); font-weight: 600; } .previa .p { color: var(--terra); font-weight: 600; }
 
   /* Barra fija inferior */
   .barra { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
-    background: linear-gradient(to top, rgba(3, 4, 12, .92) 40%, rgba(3, 4, 12, 0)); }
+    background: linear-gradient(to top, rgba(240, 238, 233, .96) 45%, rgba(240, 238, 233, 0)); }
   .barra .btn { width: 100%; max-width: 528px; margin: 0 auto; display: flex; height: 60px; font-size: 1.08em; }
   .barra .ayuda { text-align: center; font-size: .78em; color: var(--dim); margin-top: 8px; }
 
@@ -74,35 +74,34 @@
   .resultado { text-align: center; padding: 30px 22px; margin-top: 2vh; }
   .sello { width: 84px; height: 84px; margin: 0 auto 14px; border-radius: 50%; display: grid; place-items: center; }
   .sello svg { width: 40px; height: 40px; }
-  .sello.ok { background: radial-gradient(circle, rgba(61, 255, 168, .35), rgba(61, 255, 168, .05)); box-shadow: 0 0 40px rgba(61, 255, 168, .35), inset 0 0 0 1px rgba(61, 255, 168, .6); color: var(--green); }
-  .sello.mal { background: radial-gradient(circle, rgba(255, 93, 115, .35), rgba(255, 93, 115, .05)); box-shadow: 0 0 40px rgba(255, 93, 115, .3), inset 0 0 0 1px rgba(255, 93, 115, .6); color: var(--red); }
-  .sello.nada { background: rgba(255, 255, 255, .06); box-shadow: inset 0 0 0 1px var(--line); color: var(--dim); }
-  .resultado h2 { font-size: 1.6em; margin-bottom: .3em; }
+  .sello.ok { background: rgba(127, 148, 120, .14); box-shadow: inset 0 0 0 1px rgba(127, 148, 120, .5); color: var(--sage-d); }
+  .sello.mal { background: rgba(181, 99, 90, .12); box-shadow: inset 0 0 0 1px rgba(181, 99, 90, .45); color: var(--terra); }
+  .sello.nada { background: rgba(43, 39, 36, .05); box-shadow: inset 0 0 0 1px var(--line); color: var(--dim); }
+  .resultado h2 { font-size: 2.4em; margin-bottom: .2em; }
   .resultado .det { color: var(--soft); margin: 0 auto 10px; max-width: 26em; }
-  .puntos { font-family: var(--f-display); font-weight: 700; font-size: 4.2em; line-height: 1; margin: 14px 0 4px;
-    background: linear-gradient(180deg, #fff, #c8d4ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .puntos { font-family: var(--f-display); font-size: 5.4em; line-height: 1; margin: 10px 0 2px; color: var(--ink); }
   .puntos-et { color: var(--dim); font-size: .85em; letter-spacing: .06em; }
   .explica { text-align: left; margin: 20px 0 0; padding: 16px 18px; border-radius: 20px; line-height: 1.5; }
-  .explica b { display: block; font-family: var(--f-display); color: var(--green); margin-bottom: 4px; font-weight: 600; }
+  .explica b { display: block; font-family: var(--f-display); font-style: italic; font-weight: 400; font-size: 1.25em; color: var(--sage-d); margin-bottom: 2px; }
   .acum { margin-top: 18px; color: var(--soft); font-size: .95em; }
-  .acum b { color: var(--ink); font-family: var(--f-display); }
+  .acum b { color: var(--ink); }
 
   /* Final */
   .final { padding: 26px 20px; }
-  .final h2 { font-size: 1.7em; margin-bottom: .3em; }
-  .final .grande { font-family: var(--f-display); font-weight: 700; font-size: 3.2em; line-height: 1; margin: 6px 0 4px; }
+  .final h2 { font-size: 2.4em; margin-bottom: .2em; }
+  .final .grande { font-family: var(--f-display); font-size: 4.4em; line-height: 1; margin: 4px 0 2px; }
   .cal { display: grid; gap: 10px; margin: 18px 0 10px; }
   .cal .fila { display: grid; grid-template-columns: 4em 1fr 3.6em; gap: 12px; align-items: center; }
-  .cal .ap { font-family: var(--f-display); font-weight: 600; }
-  .cal .riel { height: 12px; border-radius: 99px; background: rgba(255, 255, 255, .08); position: relative; overflow: hidden; }
-  .cal .riel i { position: absolute; inset: 0 auto 0 0; border-radius: 99px; background: linear-gradient(90deg, var(--cyan), var(--violet)); transition: width .8s var(--ease); }
-  .cal .riel u { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--gold); }
+  .cal .ap { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .cal .riel { height: 10px; border-radius: 99px; background: rgba(43, 39, 36, .08); position: relative; overflow: hidden; }
+  .cal .riel i { position: absolute; inset: 0 auto 0 0; border-radius: 99px; background: linear-gradient(90deg, var(--mocha-l), var(--mocha)); transition: width .8s var(--ease); }
+  .cal .riel u { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink); }
   .cal .val { text-align: right; color: var(--soft); font-variant-numeric: tabular-nums; }
   .final .nota { font-size: .88em; color: var(--dim); }
 </style>
 </head>
 <body>
-<div class="escena" aria-hidden="true"><div class="rayos"></div><i class="orbe o1"></i><i class="orbe o2"></i><i class="orbe o3"></i><div class="piso"></div></div>
+<div class="escena" aria-hidden="true"><i class="orbe o1"></i><i class="orbe o2"></i><i class="orbe o3"></i></div>
 <main>
   <div class="top">
     <span class="marca">La apuesta de <b>confianza</b></span>
@@ -137,7 +136,7 @@
   </section>
 
   <section id="v-enviada" class="vista glass espera oculto">
-    <div class="loader" style="border-top-color:var(--gold)"></div>
+    <div class="loader" style="border-top-color:var(--sage)"></div>
     <h2>Respuesta final</h2>
     <p id="enviada-resumen"></p>
     <p class="dim">Espera a que se revele la respuesta correcta.</p>
@@ -157,7 +156,7 @@
     <h2>Fin de la partida</h2>
     <div class="soft">Tu promedio por pregunta</div>
     <div class="grande" id="fin-total"></div>
-    <p class="soft" style="margin:18px 0 0">Cuando apostaste cada porcentaje, ¿cuántas veces acertaste? La línea dorada marca lo que habrías acertado estando bien calibrado.</p>
+    <p class="soft" style="margin:18px 0 0">Cuando apostaste cada porcentaje, ¿cuántas veces acertaste? La marca oscura indica lo que habrías acertado estando bien calibrado.</p>
     <div class="cal" id="fin-cal"></div>
     <p class="nota">Si la barra queda por debajo de la línea, confiabas más de lo que sabías.</p>
   </section>
