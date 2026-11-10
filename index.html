@@ -139,7 +139,7 @@ async function unirse() {
     $("quien").textContent = (yo.exists() ? yo.val().apodo : a);
     escuchar();
   } catch (e) {
-    err.textContent = e.message || "No se pudo entrar. Intenta de nuevo.";
+    err.textContent = (e && e.code === "auth/admin-restricted-operation") ? "El juego todavía no está listo. Avísale al profesor." : (e.message || "No se pudo entrar. Intenta de nuevo.");
     err.classList.remove("oculto");
     $("b-unirse").disabled = false;
   }
