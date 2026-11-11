@@ -35,7 +35,6 @@ h1, h2, h3 { font-family: var(--f-display); font-weight: 900; letter-spacing: -.
 .oculto { display: none !important; }
 .soft { color: var(--soft); }
 .dim { color: var(--dim); }
-.jp { font-family: "Noto Sans JP", sans-serif; font-weight: 700; font-size: .72em; letter-spacing: .18em; color: var(--led); }
 
 /* ---------- Fondo: estudio oscuro con focos azules y textura LED ---------- */
 .escena { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none;

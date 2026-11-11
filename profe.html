@@ -157,13 +157,13 @@
   <!-- Sala de espera -->
   <section id="v-sala" class="vista sala oculto">
     <div class="glass entrada">
-      <div class="et">CÓDIGO DE LA PARTIDA <span class="jp">コード</span></div>
+      <div class="et">CÓDIGO DE LA PARTIDA</div>
       <div class="gigante led" id="codigo"></div>
       <div class="url" id="url"></div>
       <div class="fila"><div id="qr"></div><p>Escanea el código o abre la dirección, escribe el código de la partida y elige un apodo.</p></div>
     </div>
     <div class="glass jugadores">
-      <div class="jp" style="margin-bottom:6px">参加者</div><div class="cuenta" id="n-jug">0<small>conectados</small></div>
+      <div class="cuenta" id="n-jug">0<small>conectados</small></div>
       <div class="chips" id="chips"></div>
     </div>
   </section>
@@ -173,7 +173,7 @@
     <div>
       <div class="cab">
         <div class="reloj" id="reloj"><svg viewBox="0 0 80 80"><circle class="fondo" cx="40" cy="40" r="35"/><circle class="arco" id="arco" cx="40" cy="40" r="35" stroke-dasharray="219.9" stroke-dashoffset="0"/></svg><b id="seg"></b></div>
-        <div><div class="num"><span id="q-num"></span> <span class="jp">問題</span></div><div class="estado" id="q-estado"></div></div>
+        <div><div class="num"><span id="q-num"></span></div><div class="estado" id="q-estado"></div></div>
       </div>
       <div class="linea"><div class="loz pregunta"><div class="in" id="q-texto"></div></div></div>
       <div class="grid-resp" id="resp"></div>
@@ -188,7 +188,7 @@
 
   <!-- Ranking -->
   <section id="v-ranking" class="vista podio oculto">
-    <div class="jp" style="text-align:center;margin-bottom:6px">ランキング</div><h2>Ranking</h2>
+    <h2>Ranking</h2>
     <p>Promedio de puntos por pregunta revelada. Quien no respondió una pregunta, suma cero en ella.</p>
     <div class="ranking" id="ranking"></div>
   </section>
@@ -196,7 +196,7 @@
   <!-- Final -->
   <section id="v-final" class="vista final oculto">
     <div class="glass tarjeta">
-      <div class="jp" style="margin-bottom:6px">結果</div><h2>Calibración del grupo</h2>
+      <h2>Calibración del grupo</h2>
       <p>Cuando el grupo apostó cada porcentaje, ¿qué proporción acertó? Un grupo bien calibrado cae sobre la diagonal; por debajo de ella, hubo exceso de confianza.</p>
       <div id="curva"></div>
     </div>
@@ -208,7 +208,7 @@
 </main>
 
 <nav class="dock glass oculto" id="dock" aria-label="Controles de la partida"></nav>
-<div class="cinta" aria-hidden="true"><div><span>La apuesta de confianza</span><b>クイズ</b><span>Piensa antes de apostar</span><b>ファイナルアンサー</b><span>Desarrollo del pensamiento crítico</span><b>自信</b><span>Apuesta alto solo si de verdad sabes</span><b>ライブ</b></div></div>
+<div class="cinta" aria-hidden="true"><div><span>La apuesta de confianza</span><b>En vivo</b><span>Piensa antes de apostar</span><b>Respuesta final</b><span>Desarrollo del pensamiento crítico</span><b>Calibración</b><span>Apuesta alto solo si de verdad sabes</span><b>Sistema 2</b></div></div>
 
 <script type="module">
 import { db, entrar, ahoraServidor, puntos, LETRAS, APUESTAS, nuevoCodigo, esc } from "./comun.js";
@@ -390,7 +390,7 @@ function pintar() {
   if (f === "fin") {
     const pr = promedios();
     $("curva").innerHTML = curva();
-    $("campeon").innerHTML = `<div class="dato"><div class="k">MEJOR CALIBRADO <span class="jp">優勝</span></div><div class="v">${pr[0] ? esc(pr[0].apodo) : "Nadie"}</div><div class="soft">${pr[0] ? pr[0].prom + " puntos por pregunta" : ""}</div></div>`;
+    $("campeon").innerHTML = `<div class="dato"><div class="k">MEJOR CALIBRADO</div><div class="v">${pr[0] ? esc(pr[0].apodo) : "Nadie"}</div><div class="soft">${pr[0] ? pr[0].prom + " puntos por pregunta" : ""}</div></div>`;
     $("ranking-fin").innerHTML = filasRanking(pr.slice(0, 6));
     dock([{ txt: "Descargar resultados", icono: "bajar", cls: "oro principal", fn: descargar },
           { txt: "Nueva partida", fn: () => { try { localStorage.removeItem("apuesta-profe"); } catch (e) {} location.reload(); } }, ...extra]);

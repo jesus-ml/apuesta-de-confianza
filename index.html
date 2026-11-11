@@ -18,17 +18,46 @@
   @keyframes entrar { from { opacity: 0; transform: translateY(12px) scale(.985); } }
 
   /* Unirse */
-  .unirse { padding: 28px 22px; margin-top: 5vh; }
-  .unirse h1 { font-size: 2.3em; margin-bottom: .3em; }
-  .unirse h1 span { color: var(--oro); }
-  .unirse p { color: var(--soft); margin: 0 0 22px; }
+  body[data-vista="v-unirse"] .top { visibility: hidden; height: 0; margin: 0; }
+  .unirse { margin-top: 2vh; display: grid; gap: 18px; }
+  .hero { position: relative; display: grid; justify-items: center; text-align: center; padding: 10px 0 4px; }
+  .sol { position: relative; width: min(54vw, 210px); aspect-ratio: 1; margin-bottom: -38px; animation: salir 1.1s var(--ease) both; }
+  .sol::before { content: ""; position: absolute; inset: -30%; border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(255, 149, 0, .32), rgba(255, 61, 127, .12) 60%, transparent);
+    animation: latido 5s ease-in-out infinite; }
+  .sol i { position: absolute; inset: 0; border-radius: 50%;
+    background: linear-gradient(180deg, #ffd84a 0%, var(--oro) 22%, var(--naranja) 52%, #ff4f7b 100%);
+    -webkit-mask: linear-gradient(180deg, #000 0 52%, transparent 52% 55%, #000 55% 63%, transparent 63% 67.5%, #000 67.5% 74%, transparent 74% 79.5%, #000 79.5% 84%, transparent 84% 91%, #000 91% 93.5%, transparent 93.5%);
+            mask: linear-gradient(180deg, #000 0 52%, transparent 52% 55%, #000 55% 63%, transparent 63% 67.5%, #000 67.5% 74%, transparent 74% 79.5%, #000 79.5% 84%, transparent 84% 91%, #000 91% 93.5%, transparent 93.5%); }
+  .horizonte { width: 100%; height: 1px; position: relative; z-index: 1;
+    background: linear-gradient(90deg, transparent, rgba(255, 194, 46, .7) 30%, rgba(255, 194, 46, .7) 70%, transparent); }
+  .olas { width: 100%; height: 46px; display: block; opacity: .55;
+    -webkit-mask: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent);
+            mask: linear-gradient(90deg, transparent, #000 25%, #000 75%, transparent); }
+  .hero .rotulo { margin-top: 18px; }
+  .hero h1 { position: relative; z-index: 2; font-size: clamp(2.3em, 10.5vw, 3.1em); line-height: 1.02; letter-spacing: -.01em; margin: .25em 0 0;
+    font-weight: 900; text-shadow: 0 2px 24px rgba(2, 3, 11, .9); animation: salir .9s .15s var(--ease) both; }
+  .hero h1 span { color: var(--naranja); }
+  .rotulo { display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-num); font-weight: 600; font-size: .74em;
+    letter-spacing: .32em; text-transform: uppercase; color: var(--plata); }
+  .rotulo::before, .rotulo::after { content: ""; width: 22px; height: 1px; background: var(--oro); opacity: .8; }
+  @keyframes salir { from { opacity: 0; transform: translateY(18px); } }
+  @keyframes latido { 50% { transform: scale(1.08); opacity: .75; } }
+
+  .forma { padding: 24px 20px 20px; animation: salir .9s .3s var(--ease) both; }
+  .forma .etq { display: block; font-size: .8em; color: var(--dim); letter-spacing: .2em; text-transform: uppercase; margin: 0 0 10px 2px; font-family: var(--f-num); font-weight: 600; }
+  .otp { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+  .otp input { width: 100%; aspect-ratio: 1 / 1.08; min-width: 0; text-align: center; padding: 0; border-radius: 10px;
+    font-family: var(--f-num); font-weight: 700; font-size: 1.9em; color: var(--oro); text-transform: uppercase; caret-color: var(--oro);
+    background: rgba(0, 0, 0, .5); border: 1px solid rgba(160, 180, 255, .32); transition: border-color .2s, box-shadow .2s, transform .2s; }
+  .otp input:focus { outline: none; border-color: var(--oro); box-shadow: 0 0 0 3px rgba(255, 194, 46, .16), inset 0 0 18px rgba(255, 149, 0, .12); }
+  .otp input.lleno { border-color: rgba(255, 194, 46, .6); text-shadow: 0 0 12px rgba(255, 194, 46, .55); }
   .campo { display: block; margin-bottom: 14px; }
-  .campo span { display: block; font-size: .82em; color: var(--dim); margin: 0 0 6px 4px; letter-spacing: .04em; }
-  .campo input { width: 100%; height: 58px; border-radius: 10px; padding: 0 18px; font: inherit; font-size: 1.15em; color: var(--ink);
-    background: rgba(0, 0, 0, .45); border: 1px solid rgba(160, 180, 255, .4); transition: border-color .2s, background .2s; }
+  .campo input { width: 100%; height: 56px; border-radius: 10px; padding: 0 18px; font: inherit; font-size: 1.1em; color: var(--ink);
+    background: rgba(0, 0, 0, .45); border: 1px solid rgba(160, 180, 255, .32); transition: border-color .2s, background .2s; }
   .campo input:focus { outline: none; border-color: var(--oro); background: rgba(0, 0, 0, .6); }
-  #codigo { text-transform: uppercase; letter-spacing: .5em; text-align: center; font-family: var(--f-num); font-weight: 600; font-size: 1.5em; padding-left: .5em; }
-  .unirse .btn { width: 100%; margin-top: 10px; height: 58px; font-size: 1.05em; }
+  .forma .btn { width: 100%; margin-top: 6px; height: 58px; font-size: 1.05em; letter-spacing: .04em; }
+  .forma .pie { color: var(--dim); font-size: .86em; text-align: center; margin: 14px 4px 0; line-height: 1.45; }
   .aviso { margin-top: 14px; }
 
   /* Espera */
@@ -109,36 +138,51 @@
     <span class="pill oculto" id="quien"></span>
   </div>
 
-  <section id="v-unirse" class="vista glass unirse">
-    <h1>Entra al <span>juego</span></h1>
-    <p>Escribe el código que aparece en la pantalla del salón y elige un apodo. Nadie verá tu nombre real.</p>
-    <label class="campo"><span>CÓDIGO DE PARTIDA</span><input id="codigo" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" inputmode="text" placeholder="ABCD"></label>
-    <label class="campo"><span>TU APODO</span><input id="apodo" maxlength="20" autocomplete="off" spellcheck="false" placeholder="Sócrates_99"></label>
-    <button id="b-unirse" class="btn cian">Entrar</button>
-    <p id="err-unirse" class="aviso oculto"></p>
+  <section id="v-unirse" class="vista unirse">
+    <div class="hero">
+      <div class="sol"><i></i></div>
+      <div class="horizonte"></div>
+      <svg class="olas" aria-hidden="true"><defs><pattern id="seigaiha" width="40" height="20" patternUnits="userSpaceOnUse"><g fill="none" stroke="#3fd0ff" stroke-width="1"><g id="ola"><circle cx="20" cy="20" r="18"/><circle cx="20" cy="20" r="13"/><circle cx="20" cy="20" r="8"/><circle cx="20" cy="20" r="3"/></g><use href="#ola" x="-20" y="-10"/><use href="#ola" x="20" y="-10"/><use href="#ola" x="-20" y="10"/><use href="#ola" x="20" y="10"/><use href="#ola" y="20"/></g></pattern></defs><rect width="100%" height="100%" fill="url(#seigaiha)"/></svg>
+      <span class="rotulo">Pensamiento crítico</span>
+      <h1>La apuesta<br>de <span>confianza</span></h1>
+    </div>
+    <div class="glass forma">
+      <span class="etq">Código de partida</span>
+      <div class="otp" id="otp">
+        <input maxlength="1" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Letra 1 del código">
+        <input maxlength="1" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Letra 2 del código">
+        <input maxlength="1" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Letra 3 del código">
+        <input maxlength="1" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Letra 4 del código">
+      </div>
+      <input id="codigo" type="hidden">
+      <label class="campo"><span class="etq">Tu apodo</span><input id="apodo" maxlength="20" autocomplete="off" spellcheck="false" placeholder="Sócrates_99"></label>
+      <button id="b-unirse" class="btn oro">Entrar al juego</button>
+      <p class="pie">Escribe el código que aparece en la pantalla del salón. Los demás solo verán tu apodo.</p>
+      <p id="err-unirse" class="aviso oculto"></p>
+    </div>
   </section>
 
   <section id="v-espera" class="vista glass espera oculto">
     <div class="loader"></div>
-    <div class="jp">待機中</div><h2 id="espera-titulo">Ya estás dentro</h2>
+    <h2 id="espera-titulo">Ya estás dentro</h2>
     <p id="espera-texto">En cuanto el profesor lance la primera pregunta, aparecerá aquí.</p>
   </section>
 
   <section id="v-pregunta" class="vista oculto">
     <div class="cab">
-      <span><span class="num" id="q-num"></span> <span class="jp">問題</span></span>
+      <span><span class="num" id="q-num"></span></span>
       <div class="reloj" id="reloj"><svg viewBox="0 0 48 48"><circle class="fondo" cx="24" cy="24" r="21"/><circle class="arco" id="arco" cx="24" cy="24" r="21" stroke-dasharray="131.95" stroke-dashoffset="0"/></svg><b id="seg"></b></div>
     </div>
     <div class="linea"><div class="loz pregunta"><div class="in" id="q-texto"></div></div></div>
     <div class="respuestas" id="opciones" role="radiogroup" aria-label="Respuestas"></div>
-    <div class="seg-titulo"><span>¿QUÉ TAN SEGURO ESTÁS?</span><span class="jp">自信</span></div>
+    <div class="seg-titulo"><span>¿QUÉ TAN SEGURO ESTÁS?</span></div>
     <div class="segmentos glass" id="apuestas" role="radiogroup" aria-label="Apuesta"><span class="ficha" id="ficha"></span></div>
     <div class="previa" id="previa"></div>
   </section>
 
   <section id="v-enviada" class="vista glass espera oculto">
     <div class="loader" style="border-top-color:var(--sage)"></div>
-    <h2>Respuesta final</h2><div class="jp">ファイナルアンサー</div>
+    <h2>Respuesta final</h2>
     <p id="enviada-resumen"></p>
     <p class="dim">Espera a que se revele la respuesta correcta.</p>
   </section>
@@ -154,7 +198,7 @@
   </section>
 
   <section id="v-final" class="vista glass final oculto">
-    <div class="jp">結果</div><h2>Fin de la partida</h2>
+    <h2>Fin de la partida</h2>
     <div class="soft">Tu promedio por pregunta</div>
     <div class="grande led" id="fin-total"></div>
     <p class="soft" style="margin:18px 0 0">Cuando apostaste cada porcentaje, ¿cuántas veces acertaste? La marca dorada indica lo que habrías acertado estando bien calibrado.</p>
@@ -164,7 +208,7 @@
 </main>
 
 <div class="barra oculto" id="barra">
-  <button class="btn oro" id="b-enviar" disabled>Respuesta final <span class="jp" style="color:inherit;opacity:.7">ファイナルアンサー</span></button>
+  <button class="btn oro" id="b-enviar" disabled>Respuesta final</button>
   <div class="ayuda" id="ayuda">Elige una respuesta y qué tan seguro estás</div>
 </div>
 
@@ -178,6 +222,7 @@ let actual = null;
 function ver(v) {
   if (actual === v) return;
   actual = v;
+  document.body.dataset.vista = v;
   vistas.forEach((x) => $(x).classList.toggle("oculto", x !== v));
   $("barra").classList.toggle("oculto", v !== "v-pregunta");
 }
@@ -201,14 +246,41 @@ addEventListener("pointermove", (e) => {
   g.style.setProperty("--my", (e.clientY - r.top) + "px");
 }, { passive: true });
 
-try {
-  const g = JSON.parse(localStorage.getItem("apuesta") || "null");
-  if (g) { $("codigo").value = g.codigo || ""; $("apodo").value = g.apodo || ""; }
-} catch (e) {}
-ver("v-unirse");
 
 $("b-unirse").addEventListener("click", unirse);
-$("codigo").addEventListener("input", (e) => { e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ""); if (e.target.value.length === 4) $("apodo").focus(); });
+const cajas = [...document.querySelectorAll("#otp input")];
+const limpio = (t) => (t || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+function sincronizar() {
+  $("codigo").value = cajas.map((c) => c.value).join("");
+  cajas.forEach((c) => c.classList.toggle("lleno", !!c.value));
+}
+function ponerCodigo(t, desde = 0) {
+  const l = limpio(t).slice(0, 4 - desde).split("");
+  l.forEach((ch, k) => { cajas[desde + k].value = ch; });
+  sincronizar();
+  const sig = desde + l.length;
+  if (sig >= 4) $("apodo").focus(); else if (l.length) cajas[sig].focus();
+}
+cajas.forEach((c, k) => {
+  c.addEventListener("input", () => {
+    const t = limpio(c.value);
+    c.value = "";
+    if (t) ponerCodigo(t, k); else sincronizar();
+  });
+  c.addEventListener("keydown", (e) => {
+    if (e.key === "Backspace" && !c.value && k > 0) { cajas[k - 1].value = ""; cajas[k - 1].focus(); sincronizar(); e.preventDefault(); }
+    else if (e.key === "ArrowLeft" && k > 0) cajas[k - 1].focus();
+    else if (e.key === "ArrowRight" && k < 3) cajas[k + 1].focus();
+    else if (e.key === "Enter") $("b-unirse").click();
+  });
+  c.addEventListener("paste", (e) => { e.preventDefault(); ponerCodigo((e.clipboardData || window.clipboardData).getData("text"), k); });
+  c.addEventListener("focus", () => c.select());
+});
+try {
+  const g = JSON.parse(localStorage.getItem("apuesta") || "null");
+  if (g) { ponerCodigo(g.codigo || ""); $("apodo").value = g.apodo || ""; }
+} catch (e) {}
+ver("v-unirse");
 $("apodo").addEventListener("keydown", (e) => { if (e.key === "Enter") unirse(); });
 
 async function unirse() {
@@ -371,7 +443,7 @@ function pintarResultado(q) {
   } else {
     const ok = m.op === c; pts = puntos(m.conf, ok);
     sello.className = "sello " + (ok ? "ok" : "mal"); sello.innerHTML = ok ? ICONO.ok : ICONO.mal;
-    $("res-titulo").innerHTML = ok ? 'Acertaste <span class="jp">正解</span>' : 'Fallaste <span class="jp" style="color:var(--rojo)">不正解</span>';
+    $("res-titulo").textContent = ok ? "Acertaste" : "Fallaste";
     let extra = "";
     if (!ok && m.conf >= 90) extra = " Apostar tan alto y fallar cuesta caro.";
     else if (ok && m.conf <= 50) extra = " Sabías más de lo que creías.";
