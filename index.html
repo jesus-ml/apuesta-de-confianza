@@ -7,7 +7,11 @@
 <title>La apuesta de confianza</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@500;700;900&display=swap">
+<style>html,body{background:#02030b;color:#eef2ff}</style>
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js">
+<link rel="modulepreload" href="https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=Inter:wght@400;600;800;900&display=swap" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="estilos.css">
 <style>
   main { max-width: 560px; margin: 0 auto; min-height: 100dvh; display: flex; flex-direction: column;
@@ -217,6 +221,22 @@
   <div class="ayuda" id="ayuda">Elige una respuesta y qué tan seguro estás</div>
 </div>
 
+<script>
+// Si la conexión es lenta, el botón avisa en lugar de no hacer nada
+window.__listo = false;
+document.getElementById("b-unirse").addEventListener("click", () => {
+  if (window.__listo) return;
+  const e = document.getElementById("err-unirse");
+  e.textContent = "Todavía se está conectando. Espera unos segundos y vuelve a intentarlo.";
+  e.classList.remove("oculto");
+});
+setTimeout(() => {
+  if (window.__listo) return;
+  const e = document.getElementById("err-unirse");
+  e.textContent = "La conexión va lenta. Si en un momento no funciona, recarga la página o cambia de wifi a datos.";
+  e.classList.remove("oculto");
+}, 12000);
+</script>
 <script type="module">
 import { db, entrar, ahoraServidor, puntos, LETRAS, APUESTAS, esc } from "./comun.js";
 import { ref, get, set, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
@@ -286,6 +306,8 @@ try {
   if (g) { ponerCodigo(g.codigo || ""); $("apodo").value = g.apodo || ""; }
 } catch (e) {}
 ver("v-unirse");
+window.__listo = true;
+if (/conectando|lenta/.test($("err-unirse").textContent)) $("err-unirse").classList.add("oculto");
 $("apodo").addEventListener("keydown", (e) => { if (e.key === "Enter") unirse(); });
 
 async function unirse() {

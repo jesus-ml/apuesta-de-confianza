@@ -21,9 +21,9 @@
   --mocha: var(--naranja); --mocha-d: #e07800; --mocha-l: #ffb347;
   --sage: var(--verde); --sage-d: var(--verde); --terra: var(--rojo); --mist: var(--azul);
   --gold: var(--oro); --gold2: var(--naranja); --cyan: var(--led); --violet: var(--azul); --green: var(--verde); --red: var(--rojo);
-  --f-display: "Noto Sans JP", "Inter", system-ui, sans-serif;
+  --f-display: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --f-num: "Chakra Petch", "Inter", system-ui, sans-serif;
-  --f-body: "Inter", "Noto Sans JP", system-ui, sans-serif;
+  --f-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --hex: polygon(24px 0, calc(100% - 24px) 0, 100% 50%, calc(100% - 24px) 100%, 24px 100%, 0 50%);
   --ease: cubic-bezier(.2, .8, .2, 1);
   color-scheme: dark;
