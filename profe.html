@@ -62,6 +62,7 @@
   .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 20px; align-content: flex-start; }
   .chip { height: 38px; padding: 0 16px; display: inline-flex; align-items: center; border-radius: 8px; font-weight: 500;
     background: rgba(42, 91, 255, .14); border: 1px solid rgba(120, 150, 255, .45); animation: aparecer .5s var(--ease) both; }
+  .chip.fuera { opacity: .4; border-style: dashed; }
   .chip.falta { color: var(--mocha-d); border-color: rgba(255, 149, 0, .35); background: rgba(255, 149, 0, .08); }
   @keyframes aparecer { from { opacity: 0; transform: scale(.6); } }
 
@@ -231,7 +232,7 @@ const SVG = {
 };
 
 let uid, codigo, banco, bancoIdx = 0, dur = BANCOS[0].segundos || 40;
-let estado = null, jugadores = {}, respuestas = {}, claves = {}, timer = null, verVotos = true, qRender = null, principal = null;
+let estado = null, jugadores = {}, respuestas = {}, jugadoresRaw = {}, respuestasRaw = {}, conectados = {}, claves = {}, timer = null, verVotos = true, qRender = null, principal = null;
 
 // Luz que sigue al cursor sobre el vidrio
 addEventListener("pointermove", (e) => {
@@ -311,10 +312,27 @@ function abrir(c, b) {
   try { new QRCode($("qr"), { text: url, width: 152, height: 152, colorDark: "#050b30", colorLight: "#ffffff" }); } catch (e) {}
   $("dock").classList.remove("oculto");
   onValue(ref(db, `partidas/${c}/estado`), (s) => { estado = s.val(); pintar(); });
-  onValue(ref(db, `partidas/${c}/jugadores`), (s) => { jugadores = s.val() || {}; pintar(); });
-  onValue(ref(db, `partidas/${c}/respuestas`), (s) => { respuestas = s.val() || {}; pintar(); });
+  onValue(ref(db, `partidas/${c}/jugadores`), (s) => { jugadoresRaw = s.val() || {}; normalizar(); pintar(); });
+  onValue(ref(db, `partidas/${c}/respuestas`), (s) => { respuestasRaw = s.val() || {}; normalizar(); pintar(); });
+  onValue(ref(db, `partidas/${c}/conectados`), (s) => { conectados = s.val() || {}; pintar(); });
   onValue(ref(db, `partidas/${c}/claves`), (s) => { claves = s.val() || {}; pintar(); });
 }
+
+/* ---------- Jugadores que regresan desde otro dispositivo ----------
+   Un registro con "de" apunta al jugador original: se suman como una sola persona
+   y, si contestó la misma pregunta dos veces, cuenta la primera respuesta. */
+const raiz = (u) => (jugadoresRaw[u] && jugadoresRaw[u].de) || u;
+function normalizar() {
+  jugadores = {};
+  for (const u in jugadoresRaw) if (!jugadoresRaw[u].de) jugadores[u] = jugadoresRaw[u];
+  respuestas = {};
+  for (const q in respuestasRaw) {
+    const rq = respuestasRaw[q] || {}, out = {};
+    Object.keys(rq).sort((a, b) => (rq[a].t || 0) - (rq[b].t || 0)).forEach((u) => { const k = raiz(u); if (!out[k]) out[k] = rq[u]; });
+    respuestas[q] = out;
+  }
+}
+const enLinea = (r) => Object.keys(conectados).some((u) => raiz(u) === r);
 
 /* ---------- Acciones ---------- */
 const apodo = (u) => (jugadores[u] && jugadores[u].apodo) || "Sin apodo";
@@ -380,7 +398,7 @@ function pintar() {
   if (f === "lobby") {
     const uids = Object.keys(jugadores);
     $("n-jug").innerHTML = `<span class="led">${uids.length}</span><small>${uids.length === 1 ? "conectado" : "conectados"}</small>`;
-    $("chips").innerHTML = uids.map((u) => `<span class="chip">${esc(apodo(u))}</span>`).join("") || '<span class="dim">Todavía no entra nadie</span>';
+    $("chips").innerHTML = uids.map((u) => `<span class="chip${Object.keys(conectados).length && !enLinea(u) ? " fuera" : ""}">${esc(apodo(u))}</span>`).join("") || '<span class="dim">Todavía no entra nadie</span>';
     dock([{ txt: "Lanzar la primera pregunta", icono: "play", cls: "cian principal", tecla: "Espacio", principal: true, fn: () => lanzar(0) }, ...extra]);
     return ver("v-sala");
   }

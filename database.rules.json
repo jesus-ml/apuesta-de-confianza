@@ -7,7 +7,7 @@
         "jugadores": {
           "$uid": {
             ".write": "auth != null && auth.uid === $uid && !data.exists() && root.child('partidas/' + $c + '/owner').exists()",
-            ".validate": "newData.hasChildren(['apodo']) && newData.child('apodo').isString() && newData.child('apodo').val().length > 0 && newData.child('apodo').val().length <= 20"
+            ".validate": "newData.hasChildren(['apodo']) && newData.child('apodo').isString() && newData.child('apodo').val().length > 0 && newData.child('apodo').val().length <= 20 && (!newData.hasChild('de') || (newData.child('de').isString() && root.child('partidas/' + $c + '/jugadores/' + newData.child('de').val()).child('apodo').val() === newData.child('apodo').val() && !root.child('partidas/' + $c + '/jugadores/' + newData.child('de').val()).child('de').exists() && !root.child('partidas/' + $c + '/conectados/' + newData.child('de').val()).exists()))"
           }
         },
         "respuestas": {
@@ -16,6 +16,12 @@
               ".write": "auth != null && auth.uid === $uid && !data.exists() && root.child('partidas/' + $c + '/jugadores/' + $uid).exists() && root.child('partidas/' + $c + '/estado/fase').val() === 'pregunta' && root.child('partidas/' + $c + '/estado/qk').val() === $q",
               ".validate": "newData.hasChildren(['op', 'conf']) && newData.child('op').isNumber() && newData.child('op').val() >= 0 && newData.child('op').val() <= 3 && (newData.child('conf').val() === 50 || newData.child('conf').val() === 70 || newData.child('conf').val() === 90 || newData.child('conf').val() === 100)"
             }
+          }
+        },
+        "conectados": {
+          "$uid": {
+            ".write": "auth != null && auth.uid === $uid",
+            ".validate": "newData.isBoolean()"
           }
         }
       }

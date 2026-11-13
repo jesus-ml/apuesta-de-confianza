@@ -27,3 +27,7 @@ La respuesta correcta solo se sube a la base de datos cuando el profesor la reve
 - Solo el navegador que creó la partida puede controlarla (reglas en `database.rules.json`).
 - Cada alumno solo puede escribir su propia respuesta, una vez, y solo mientras la pregunta está abierta.
 - Un alumno con conocimientos técnicos podría leer las respuestas de los demás desde la consola del navegador: es un juego de clase, no un examen de alto riesgo.
+
+## Si alguien se sale
+
+Desde el mismo celular y navegador basta con volver a entrar: conserva sus puntos. Desde otro dispositivo, entra con el mismo código y el mismo apodo; si su sesión anterior ya está desconectada, recupera su lugar y sus respuestas. Si el apodo está en uso por alguien conectado, el juego no lo deja entrar con ese nombre.

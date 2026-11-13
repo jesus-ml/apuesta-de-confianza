@@ -239,7 +239,7 @@ setTimeout(() => {
 </script>
 <script type="module">
 import { db, entrar, ahoraServidor, puntos, LETRAS, APUESTAS, esc } from "./comun.js";
-import { ref, get, set, onValue, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { ref, get, set, onValue, onDisconnect, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const $ = (id) => document.getElementById(id);
 const vistas = ["v-unirse", "v-espera", "v-pregunta", "v-enviada", "v-resultado", "v-final"];
@@ -320,10 +320,25 @@ async function unirse() {
     const existe = await get(ref(db, `partidas/${c}/estado`));
     if (!existe.exists()) throw new Error("No hay ninguna partida con ese código. Revisa la pantalla del salón.");
     const yo = await get(ref(db, `partidas/${c}/jugadores/${uid}`));
-    if (!yo.exists()) await set(ref(db, `partidas/${c}/jugadores/${uid}`), { apodo: a.slice(0, 20), t: serverTimestamp() });
+    let nombre = yo.exists() ? yo.val().apodo : a.slice(0, 20);
+    if (!yo.exists()) {
+      // Si el apodo ya existe, es alguien que regresa desde otro dispositivo
+      const [js, cs] = await Promise.all([get(ref(db, `partidas/${c}/jugadores`)), get(ref(db, `partidas/${c}/conectados`))]);
+      const todos = js.val() || {}, en = cs.val() || {};
+      const base = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+      const orig = Object.keys(todos).find((u) => !todos[u].de && base(todos[u].apodo || "") === base(nombre));
+      const datos = { apodo: nombre, t: serverTimestamp() };
+      if (orig) {
+        const ocupado = Object.keys(en).some((u) => u === orig || (todos[u] && todos[u].de === orig));
+        if (ocupado) throw new Error("Ese apodo lo está usando alguien conectado. Si eres tú, cierra el juego en el otro dispositivo y espera un minuto; si no, elige otro apodo.");
+        nombre = todos[orig].apodo; datos.apodo = nombre; datos.de = orig;
+      }
+      await set(ref(db, `partidas/${c}/jugadores/${uid}`), datos);
+    }
     codigo = c;
-    try { localStorage.setItem("apuesta", JSON.stringify({ codigo: c, apodo: a })); } catch (e) {}
-    $("quien").textContent = yo.exists() ? yo.val().apodo : a;
+    try { localStorage.setItem("apuesta", JSON.stringify({ codigo: c, apodo: nombre })); } catch (e) {}
+    try { const p = ref(db, `partidas/${c}/conectados/${uid}`); await onDisconnect(p).remove(); await set(p, true); } catch (e) {}
+    $("quien").textContent = nombre;
     $("quien").classList.remove("oculto");
     escuchar();
   } catch (e) {
@@ -333,16 +348,25 @@ async function unirse() {
   }
 }
 
+let jugadoresTodos = {}, respuestasTodas = {};
+function misRespuestas() {
+  // Junta las respuestas de todos los dispositivos de esta persona; vale la primera
+  const yoRaiz = (jugadoresTodos[uid] && jugadoresTodos[uid].de) || uid;
+  const mios = (u) => u === yoRaiz || (jugadoresTodos[u] && jugadoresTodos[u].de === yoRaiz) || u === uid;
+  mias = {};
+  for (const q in respuestasTodas) {
+    const rq = respuestasTodas[q] || {};
+    const k = Object.keys(rq).filter(mios).sort((a, b) => (rq[a].t || 0) - (rq[b].t || 0))[0];
+    if (k) mias[q] = rq[k];
+  }
+}
 function escuchar() {
+  onValue(ref(db, `partidas/${codigo}/jugadores`), (s) => { jugadoresTodos = s.val() || {}; misRespuestas(); pintar(); });
   onValue(ref(db, `partidas/${codigo}/preguntas`), (s) => { preguntas = s.val() || []; pintar(); });
   onValue(ref(db, `partidas/${codigo}/claves`), (s) => { claves = s.val() || {}; pintar(); });
   onValue(ref(db, `partidas/${codigo}/explicaciones`), (s) => { explicaciones = s.val() || {}; pintar(); });
   onValue(ref(db, `partidas/${codigo}/estado`), (s) => { estado = s.val(); pintar(); });
-  onValue(ref(db, `partidas/${codigo}/respuestas`), (s) => {
-    const r = s.val() || {}; mias = {};
-    for (const q in r) if (r[q] && r[q][uid]) mias[q] = r[q][uid];
-    pintar();
-  });
+  onValue(ref(db, `partidas/${codigo}/respuestas`), (s) => { respuestasTodas = s.val() || {}; misRespuestas(); pintar(); });
 }
 
 function promedio() {
