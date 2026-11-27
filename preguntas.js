@@ -6,6 +6,63 @@
 
 export const BANCOS = [
   {
+    id: "s3-teoria",
+    etiqueta: "Sesión 3",
+    titulo: "Teoría: ¿qué tanto recuerdas?",
+    nota: "Preguntas directas sobre los conceptos de las sesiones 1 a 3.",
+    segundos: 45,
+    preguntas: [
+      {
+        texto: "¿Cuántos elementos del pensamiento proponen Paul y Elder?",
+        opciones: ["6", "8", "9", "12"],
+        correcta: 1,
+        explicacion: "Son 8: propósito, pregunta, información, inferencias, conceptos, supuestos, implicaciones y punto de vista."
+      },
+      {
+        texto: "¿Qué elemento del pensamiento es la meta u objetivo de un razonamiento?",
+        opciones: ["Supuestos", "Conceptos", "Propósito", "Implicaciones"],
+        correcta: 2,
+        explicacion: "El propósito responde a la pregunta: ¿qué intento lograr?"
+      },
+      {
+        texto: "¿Cuál es la pregunta guía de los supuestos?",
+        opciones: ["¿Qué estoy dando por sentado?", "¿Qué datos tengo?", "¿Qué intento lograr?", "¿Qué pasa si tengo razón?"],
+        correcta: 0,
+        explicacion: "Los supuestos son las creencias que damos por hechas sin revisarlas."
+      },
+      {
+        texto: "Las conclusiones que sacamos a partir de la información se llaman…",
+        opciones: ["Conceptos", "Inferencias", "Puntos de vista", "Propósitos"],
+        correcta: 1,
+        explicacion: "Una inferencia es el paso de los datos a una conclusión. Su pregunta guía: ¿cómo llegué a esta conclusión?"
+      },
+      {
+        texto: "El Sistema 1, según Kahneman, es…",
+        opciones: ["Lento y deliberado", "Rápido y automático", "Lógico y matemático", "Exclusivo de los expertos"],
+        correcta: 1,
+        explicacion: "El Sistema 1 es rápido, automático y casi no se cansa. El Sistema 2 es lento, deliberado y se agota."
+      },
+      {
+        texto: "Según Browne y Keeley, el pensamiento crítico necesita tres componentes:",
+        opciones: ["Leer, escribir y hablar", "Saber, poder y querer", "Datos, teoría y práctica", "Lógica, memoria y atención"],
+        correcta: 1,
+        explicacion: "Saber las preguntas críticas, poder usarlas a tiempo y querer usarlas. Sin los tres no hay pensamiento crítico."
+      },
+      {
+        texto: "Pensar críticamente en sentido fuerte significa…",
+        opciones: ["Ganar todas las discusiones", "Criticar solo a los demás", "Aplicar las preguntas críticas también a mis propias creencias", "Nunca cambiar de opinión"],
+        correcta: 2,
+        explicacion: "El sentido fuerte empieza por uno mismo. El sentido débil usa las mismas herramientas solo para defender lo que ya creo."
+      },
+      {
+        texto: "El estándar intelectual que se revisa con la pregunta «¿Puedes dar un ejemplo?» es…",
+        opciones: ["Claridad", "Profundidad", "Justicia", "Lógica"],
+        correcta: 0,
+        explicacion: "La claridad va primero: si no se entiende lo que alguien dice, no se puede juzgar si es exacto o relevante."
+      }
+    ]
+  },
+  {
     id: "s3-elementos",
     etiqueta: "Sesión 3",
     titulo: "Los 8 elementos en acción",
