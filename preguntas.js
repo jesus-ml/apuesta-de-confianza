@@ -6,6 +6,75 @@
 
 export const BANCOS = [
   {
+    id: "s3-elementos",
+    etiqueta: "Sesión 3",
+    titulo: "Los 8 elementos en acción",
+    nota: "Repaso de las sesiones 1 y 2 y de los elementos del pensamiento.",
+    segundos: 60,
+    preguntas: [
+      {
+        texto: "Juana ve que Pedro no responde en la reunión y concluye: «no le importa el proyecto». ¿Qué elemento del pensamiento falló principalmente?",
+        opciones: ["Propósito", "Supuestos", "Conceptos", "Implicaciones"],
+        correcta: 1,
+        explicacion: "Juana dio por sentado que el silencio significa desinterés sin verificarlo. Ese es un supuesto. La pregunta guía es: ¿qué estoy dando por sentado?"
+      },
+      {
+        texto: "«Las ventas bajaron este mes, así que la campaña fracasó.» La parte «así que la campaña fracasó» es…",
+        opciones: ["Información", "Un concepto", "Una inferencia", "Un punto de vista"],
+        correcta: 2,
+        explicacion: "Es una conclusión que se saca a partir de un dato: una inferencia. El dato es que las ventas bajaron. Que la culpa sea de la campaña todavía hay que demostrarlo."
+      },
+      {
+        texto: "Un gerente dice: «Bajemos precios, porque nuestros clientes compran por precio». ¿Qué parte deberías cuestionar primero?",
+        opciones: ["La implicación de bajar precios", "El supuesto de que compran por precio", "El concepto de «precio»", "El propósito de vender más"],
+        correcta: 1,
+        explicacion: "Toda la decisión descansa en algo que no se ha comprobado: que los clientes compran por precio. Si ese supuesto es falso, la conclusión se cae."
+      },
+      {
+        texto: "Con los mismos datos de ventas, el área de ventas pide contratar más vendedores y el área de finanzas pide recortar gastos. ¿Qué elemento explica mejor la diferencia?",
+        opciones: ["Punto de vista", "Información", "Pregunta", "Conceptos"],
+        correcta: 0,
+        explicacion: "La información es la misma; cambia desde dónde se mira. La pregunta guía es: ¿desde dónde lo estoy viendo y qué otras miradas hay?"
+      },
+      {
+        texto: "Antes de aprobar un proyecto, alguien pregunta: «Si esto sale como esperamos, ¿qué consecuencias tiene para el equipo y los clientes?». ¿Qué elemento está revisando?",
+        opciones: ["Supuestos", "Inferencias", "Propósito", "Implicaciones"],
+        correcta: 3,
+        explicacion: "Las implicaciones son las consecuencias de aceptar una conclusión o tomar una decisión, tanto las buenas como las malas."
+      },
+      {
+        texto: "En la revisión de una presentación, ¿qué comentario muestra mejor pensamiento crítico?",
+        opciones: ["«No me gusta ese color»", "«¿Ese color ayuda a que se lea el dato principal?»", "«Yo lo hubiera hecho diferente»", "«Se ve bonito»"],
+        correcta: 1,
+        explicacion: "El segundo comentario evalúa la presentación contra su propósito, no contra un gusto personal. Criticar no es descalificar."
+      },
+      {
+        texto: "El asesor A gana en cuentas chicas y en cuentas grandes, pero en el total gana B. ¿Cómo es posible?",
+        opciones: ["Hay un error en los datos", "B es mejor vendedor", "A atendió muchas más cuentas difíciles", "Es imposible"],
+        correcta: 2,
+        explicacion: "Es la paradoja de Simpson: el total mezcla grupos de distinto tamaño y dificultad. A atendió sobre todo cuentas grandes, que cierran menos, y eso baja su promedio total."
+      },
+      {
+        texto: "Valeria cambia de opinión sobre un tema cada vez que ve un video nuevo en redes. Según Browne y Keeley, piensa como…",
+        opciones: ["Una buscadora de oro", "Una esponja", "Una pensadora en sentido fuerte", "Una escéptica"],
+        correcta: 1,
+        explicacion: "La esponja absorbe todo y se queda con lo último que escuchó. La búsqueda de oro pregunta, filtra y se queda con lo que tiene buenas razones."
+      },
+      {
+        texto: "Daniel revisa con lupa los argumentos de quienes piensan distinto, pero nunca cuestiona los suyos. Está usando el pensamiento crítico en…",
+        opciones: ["Sentido fuerte", "Sentido débil", "Sentido neutral", "Ninguno: eso no es pensamiento crítico"],
+        correcta: 1,
+        explicacion: "En sentido débil, las preguntas críticas sirven para defender lo que ya crees. En sentido fuerte, también se aplican a uno mismo."
+      },
+      {
+        texto: "Un alumno conoce las preguntas críticas, pero bajo presión en una junta no las usa. Según Browne y Keeley, ¿qué le falta?",
+        opciones: ["Saber", "Poder", "Querer", "Nada, ya piensa críticamente"],
+        correcta: 1,
+        explicacion: "Saber es conocer las preguntas; poder es usarlas en el momento oportuno; querer es tener la disposición. Se necesitan los tres."
+      }
+    ]
+  },
+  {
     id: "s1-razonamiento",
     etiqueta: "Sesión 1",
     titulo: "¿Piensas o reaccionas?",
